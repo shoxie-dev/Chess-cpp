@@ -5,12 +5,15 @@ int main(){
     /*
     TODO: getting movement to work
     then afterwards legal moves.
+    id say get pawns to work first
     make a pure virtual function in the base class that doesnt need to be defined there
     so it will be a boolean saying virtual bool isValidmove() = 0;
     */
 
     Board board;
-
-    board.printBoard();
+    std::cout << "Test board" << std::endl;
+    board.printBoard(board.squares_t);
+    std::cout << "Game board" << std::endl;
+    board.printBoard(board.squares);
     return 0;
 }

@@ -48,7 +48,7 @@ Board::Board(){
 }
 
 
-void Board::printBoard(){
+void Board::printBoard(Piece* board_i[8][8]){
     for(int i{}; i < dim; ++i){
         for(int j{}; j < dim; ++j){
             if(squares[i][j] == nullptr){

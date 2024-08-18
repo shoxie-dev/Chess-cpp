@@ -8,7 +8,7 @@ class Board{
         Piece* squares[8][8]{nullptr};
         Piece* squares_t[8][8]{nullptr};
         Board();
-        void printBoard();
+        void printBoard(Piece* board_i[8][8]);
 };
 
 
