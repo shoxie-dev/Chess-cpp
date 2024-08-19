@@ -5,12 +5,13 @@
 #include "Rook.h"
 #include "Bishop.h"
 #include "Knight.h"
+#include "Player.h"
 #include <iostream>
 #include <iomanip>
 
 Board::Board(){
-    bool white = true;
-    bool black = false;
+    char white = 'W';
+    char black = 'B';
 
     // *** WHITE PIECES ***
     squares[7][4] = new King(white);
@@ -21,6 +22,7 @@ Board::Board(){
     squares[7][5] = new Bishop(white);
     squares[7][1] = new Knight(white);
     squares[7][6] = new Knight(white);
+    
     for(int j{}; j < dim; ++j){
         squares[6][j] = new Pawn(white);
     }
@@ -48,7 +50,7 @@ Board::Board(){
 }
 
 
-void Board::printBoard(Piece* squares_f[8][8]){
+void Board::printBoard(){
     for(int i{}; i < dim; ++i){
         for(int j{}; j < dim; ++j){
             if(squares[i][j] == nullptr){
@@ -62,10 +64,10 @@ void Board::printBoard(Piece* squares_f[8][8]){
     }
 }
 
-bool Board::makeMove(){
-    squares[4][3] = squares[6][3];
-    squares[6][3] = nullptr;
+void Board::movePiece(int startX, int startY, int endX, int endY){
+    
+    squares[endX][endY] = squares[startX][startY];
+    squares[startX][startY] = nullptr;
 
-    return true;
 }
 

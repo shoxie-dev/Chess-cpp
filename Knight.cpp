@@ -1,9 +1,9 @@
 #include "Knight.h"
 
-Knight::Knight(bool isWhite_param){
-    (isWhite_param == true)? symbol_param = 'N' : symbol_param = 'n';
+Knight::Knight(char isWhite_param){
+    (isWhite_param == 'W')? symbol_param = 'N' : symbol_param = 'n';
 }
 
-bool Knight::isValidMove(){
+bool Knight::isValidMove(int oldX, int oldY, int newX, int newY, const Board& board, char isWhite_param){
     return true;
 }
