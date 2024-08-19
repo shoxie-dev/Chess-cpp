@@ -5,5 +5,7 @@ Pawn::Pawn(bool isWhite_param){
 }
 
 bool Pawn::isValidMove(){
+
     return true;
 }
+

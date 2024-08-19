@@ -11,9 +11,12 @@ int main(){
     */
 
     Board board;
-    std::cout << "Test board" << std::endl;
-    board.printBoard(board.squares_t);
+    //std::cout << "Test board" << std::endl;
+    //board.printBoard(board.squares_t);
     std::cout << "Game board" << std::endl;
+    board.printBoard(board.squares);
+    board.makeMove();
+    std::cout << "making a move : " << std::endl;
     board.printBoard(board.squares);
     return 0;
 }

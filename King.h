@@ -1,3 +1,6 @@
+#ifndef _KING_
+#define _KING_
+
 #include "Piece.h"
 #include <iostream>
 #include <iomanip>
@@ -13,3 +16,5 @@ class King : public Piece{
         virtual bool isValidMove() override;
     
 };
+
+#endif

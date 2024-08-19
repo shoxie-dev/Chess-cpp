@@ -48,7 +48,7 @@ Board::Board(){
 }
 
 
-void Board::printBoard(Piece* board_i[8][8]){
+void Board::printBoard(Piece* squares_f[8][8]){
     for(int i{}; i < dim; ++i){
         for(int j{}; j < dim; ++j){
             if(squares[i][j] == nullptr){
@@ -60,5 +60,12 @@ void Board::printBoard(Piece* board_i[8][8]){
         }
         std::cout << '\n';
     }
+}
+
+bool Board::makeMove(){
+    squares[4][3] = squares[6][3];
+    squares[6][3] = nullptr;
+
+    return true;
 }
 

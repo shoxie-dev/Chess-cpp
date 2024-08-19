@@ -1,3 +1,6 @@
+#ifndef _ROOK_
+#define _ROOK_
+
 #include "Piece.h"
 #include <iostream>
 #include <iomanip>
@@ -13,3 +16,5 @@ class Rook : public Piece{
         virtual bool isValidMove() override;
     
 };
+
+#endif

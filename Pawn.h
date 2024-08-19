@@ -1,6 +1,10 @@
+#ifndef _PAWN_
+#define _PAWN_
+
 #include "Piece.h"
 #include <iostream>
 #include <iomanip>
+
 
 class Pawn : public Piece{
     public:
@@ -13,3 +17,5 @@ class Pawn : public Piece{
         virtual bool isValidMove() override;
     
 };
+
+#endif
