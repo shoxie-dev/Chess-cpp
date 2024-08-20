@@ -34,6 +34,18 @@ class Board{
             std::cin >> XY.second;
             return XY;
         }
+
+        char getSymbolB(int x,int y){
+            return squares[x][y]->getSymbol();
+        }
+        char getColourB(int x,int y){
+            return squares[x][y]->getColour();
+        }
+
+        Piece* getPiece(int x, int y){
+            return squares[x][y];
+        }
+        //virtual bool isValidPiece(int x, int y, char colour_param) override;
 };
 
 

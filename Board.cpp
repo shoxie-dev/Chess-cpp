@@ -65,9 +65,26 @@ void Board::printBoard(){
 }
 
 void Board::movePiece(int startX, int startY, int endX, int endY){
-    
+    //std::cout <<  " piece coordinate address(before assignment) : " << &squares[startX][startY] << std::endl; //0x7ffde32f0fa8
+    //std::cout <<  " position coordinate address(before assignment) : " << &squares[endX][endY] << std::endl; //x7ffde32f0f28
     squares[endX][endY] = squares[startX][startY];
+    //std::cout <<  " old piece coordinate address(after assignment) : " << &squares[startX][startY] << std::endl; //0x7ffde32f0fa8
+    //std::cout <<  " piece coordinate address(after assignment) : " << &squares[endX][endY] << std::endl; //0x7ffde32f0f28
     squares[startX][startY] = nullptr;
+    //why doesnt it segfault when checking the address at the nullptr? is it because the 2d array
 
 }
+/*
+    pt1
+    if i were to have an empty space object
+    delete empty space
+    assign nullptr to empty space
+    then move piece to nullptr
+
+    pt2
+    delete piece at old square
+    then assign nullptr
+    then assign new empty space
+
+*/
 

@@ -10,13 +10,21 @@ class Board;
 class Piece{
     public:
         char symbol;
-        char isWhite;
+        char colour;
         bool isCaptured;
         int x,y;
-
-        Piece() = default;
+        Piece(char symbol_param, char colour_param){
+            symbol = symbol_param;
+            colour = colour_param;
+        }
         virtual void display() = 0;
-        virtual bool isValidMove(int oldX, int oldY, int newX, int newY, const Board& board, char isWhite_param) = 0;
+        virtual bool isValidMove(int oldX, int oldY, int newX, int newY, const Board& board, char colour_param) = 0;
+        char getSymbol(){
+            return symbol;
+        }
+        char getColour(){
+            return colour;
+        }
         void setPosition(int newX, int newY);
 
 };
