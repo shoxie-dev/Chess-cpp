@@ -1,6 +1,6 @@
 #include "Bishop.h"
 
-Bishop::Bishop(char colour_param) : Piece((colour_param == 'W')? symbol_param = 'B' : symbol_param = 'b', colour_param){
+Bishop::Bishop(int x_param, int y_param,char colour_param) : Piece(x_param,y_param,(colour_param == 'W')? symbol_param = 'B' : symbol_param = 'b', colour_param){
 
 }
 

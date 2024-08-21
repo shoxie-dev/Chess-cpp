@@ -1,6 +1,6 @@
 #include "Queen.h"
 
-Queen::Queen(char colour_param) : Piece((colour_param == 'W')? symbol_param = 'Q' : symbol_param = 'q', colour_param){
+Queen::Queen(int x_param, int y_param,char colour_param) : Piece(x_param, y_param,(colour_param == 'W')? symbol_param = 'Q' : symbol_param = 'q', colour_param){
     
 }
 

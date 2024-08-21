@@ -26,56 +26,43 @@ void Game::start(){
     
     board.printBoard();
     while(gameEnd != true){
-        if(currentPlayer == &player1){
-            std::cout << "Choose piece player 1: " << std::endl;
-            std::pair<int,int> pieceXY = board.choosePiece();
-            if(board.getColourB(pieceXY.first,pieceXY.second) == 'W'){//isValidPiece('W'), btw if you pick nullptr it breaks so maybe
-                std::pair<int,int> posXY = board.newPosition();
-                bool valid_move = board.getPiece(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,'W');
+        if(currentPlayer){
+            std::cout << "Choose piece " << currentPlayer->getName() << ":" << std::endl;
+            std::pair<int,int> pieceXY = board.inputCoords();
+            if(board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColor()){// btw if you pick nullptr it breaks so maybe
+                std::cout << "Valid piece selected." << std::endl;
+            }else{   
+                bool valid_piece = false;
+                while(valid_piece == false){
+                    std::cout << "Invalid piece selected, select again." << std::endl;
+                    pieceXY = board.inputCoords();
+                    valid_piece = (board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColor());
+                }
+                std::cout << "Valid piece selected." << std::endl;
+            }
+            std::cout << "Make move: " << std::endl;
+            std::pair<int,int> posXY = board.inputCoords();
+            bool valid_move = board.getPiece(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
                 if(valid_move == true){
                     board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
                     board.printBoard();
+                }else{
+                    std::cout << "Invalid move:" << std::endl;
+                    bool valid_move = false;
+                    while(valid_move == false){
+                        std::cout << "Invalid move, select again.  " << std::endl;
+                        posXY = board.inputCoords();
+                        valid_move = board.getPiece(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
+                    }
+                    std::cout << "Valid move made." << std::endl;
                 }
-                std::cout << "valid piece selected " << std::endl;
-            }else{
-                std::cout << "invalid piece selected " << std::endl;
-            }
         }
 
-        if(currentPlayer == &player2){
-            std::cout << "Choose piece player 2: " << std::endl;
-            std::pair<int,int> pieceXY = board.choosePiece();
-            if(board.getColourB(pieceXY.first,pieceXY.second) == 'B'){//isValidPiece('W'), btw if you pick nullptr it breaks so maybe
-                std::pair<int,int> posXY = board.newPosition();
-                bool valid_move = board.getPiece(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,'B');
-                if(valid_move == true){
-                    board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
-                    board.printBoard();
-                }
-                std::cout << "valid piece selected " << std::endl;
-            }else{
-                std::cout << "invalid piece selected " << std::endl;
-            }
-        }
         
         switchTurn();
 
     }
     board.printBoard();
-    //if piece symbol is upper or lower
-    //if(currentPlayer == player1)
-    //  get piece_pos
-    //  if(isupper(squares[i][j]->getsymbol()))
-    //      BOOL isvalidmove
-    //      if(isvalid_move)
-    //          make move
-    //      else
-    //       get new move then make it
-    //  else
-    //      get piece_pos again until right so its a while loop
-        
-
-
 }
 
 bool Game::isGameOver() const{

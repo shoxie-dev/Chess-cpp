@@ -17,25 +17,16 @@ class Board{
             implement stalemate
             implement checkmate
             implement check
-            implment place move
         */
 
-        std::pair <int,int> choosePiece() const{
+        std::pair <int,int> inputCoords() const{
             std::pair <int, int> XY;
             std::cin >> XY.first;
             std::cin >> XY.second;
             return XY;
         }
 
-
-        std::pair <int,int> newPosition() const{
-            std::pair <int, int> XY;
-            std::cin >> XY.first;
-            std::cin >> XY.second;
-            return XY;
-        }
-
-        char getSymbolB(int x,int y){
+        char getSymbolB(int x,int y){// B is board
             return squares[x][y]->getSymbol();
         }
         char getColourB(int x,int y){

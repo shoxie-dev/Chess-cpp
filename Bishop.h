@@ -8,7 +8,7 @@
 class Bishop : public Piece{
     public:
         char symbol_param;
-        Bishop(char colour_param);
+        Bishop(int x_param, int y_param,char colour_param);
         ~Bishop() = default; //checkout later idk
         virtual void display() override{
             std::cout << std::setw(2) << symbol_param;
