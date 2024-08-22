@@ -73,7 +73,8 @@ void Board::printBoard(){
 }
 
 void Board::movePiece(int startX, int startY, int endX, int endY){
-    squares[endX][endY] = squares[startX][startY];
+    
+    squares[endX][endY] = squares[startX][startY];//this code for now jsut assumes its empty
     squares[startX][startY] = nullptr;
     squares[endX][endY]->setPosition(endX,endY);
 

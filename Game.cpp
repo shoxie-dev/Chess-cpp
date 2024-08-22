@@ -27,20 +27,20 @@ void Game::start(){
     board.printBoard();
     while(gameEnd != true){
         if(currentPlayer){
-            std::cout << "Choose piece " << currentPlayer->getName() << ":" << std::endl;
+            std::cout << "Choose piece " << currentPlayer->getName() << ":" << '\n';
             std::pair<int,int> pieceXY = board.inputCoords();
             if(board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColor()){// btw if you pick nullptr it breaks so maybe
-                std::cout << "Valid piece selected." << std::endl;
+                std::cout << "Valid piece selected." << '\n';
             }else{ 
                 bool valid_piece = false;
                 while(valid_piece == false){
-                    std::cout << "Invalid piece selected, select again." << std::endl;
+                    std::cout << "Invalid piece selected, select again." << '\n';
                     pieceXY = board.inputCoords();
                     valid_piece = (board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColor());
                 }
-                std::cout << "Valid piece selected." << std::endl;
+                std::cout << "Valid piece selected." << '\n';
             }
-            std::cout << "Make move: " << std::endl;
+            std::cout << "Make move: " << '\n';
             std::pair<int,int> posXY = board.inputCoords();
             bool valid_move = board.getPiece(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
                 if(valid_move == true){
@@ -49,11 +49,11 @@ void Game::start(){
                 }else{
                     bool valid_move = false;
                     while(valid_move == false){
-                        std::cout << "Invalid move, select again.  " << std::endl;
+                        std::cout << "Invalid move, select again.  " << '\n';
                         posXY = board.inputCoords();
                         valid_move = board.getPiece(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
                     }
-                    std::cout << "Valid move made." << std::endl;
+                    std::cout << "Valid move made." << '\n';
                     board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
                     board.printBoard();
                 }

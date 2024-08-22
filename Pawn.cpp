@@ -20,7 +20,7 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, const Board& boar
             if(oldX + 1 == newX  && oldY == newY){
                 valid_M = true;
             } else{
-                std::cout << "1 move only possible not two or you didnt move straight" << std::endl;
+                std::cout << "1 move only possible not two or you didnt move straight" << '\n';
             }
         }
     }
@@ -37,7 +37,7 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, const Board& boar
             if(oldX - 1 == newX  && oldY == newY){
                 valid_M = true;
             } else{
-                std::cout << "1 move only possible not two or you didnt move straight" << std::endl;
+                std::cout << "1 move only possible not two or you didnt move straight" << '\n';
             }
         }
 
