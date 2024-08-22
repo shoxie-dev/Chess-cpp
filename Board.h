@@ -13,11 +13,6 @@ class Board{
         void movePiece(int startX, int startY, int endX, int endY);
         bool isCheck(char colour) const;
         bool isCheckmate(char colour) const;
-        /* TODO:
-            implement stalemate
-            implement checkmate
-            implement check
-        */
 
         std::pair <int,int> inputCoords() const{
             std::pair <int, int> XY;
