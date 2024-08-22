@@ -31,7 +31,6 @@ class Board{
         Piece* getPiece(int x, int y){
             return squares[x][y];
         }
-        //virtual bool isValidPiece(int x, int y, char colour_param) override;
 };
 
 

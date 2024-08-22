@@ -15,15 +15,15 @@ Board::Board(){
 
     // *** WHITE PIECES ***
 
-    //squares[7][4] = new King(7,4,white);
+    squares[7][4] = new King(7,4,white);
     
-    //squares[7][3] = new Queen(7,3,white); //7 3
-    //squares[7][7] = new Rook(7,7,white);
-    //squares[7][0] = new Rook(7,0,white);
-    //squares[7][2] = new Bishop(7,2,white);
-    //squares[7][5] = new Bishop(7,5,white);
-    //squares[7][1] = new Knight(7,1,white);
-    //squares[7][6] = new Knight(7,6,white);
+    squares[7][3] = new Queen(7,3,white); //7 3
+    squares[7][7] = new Rook(7,7,white);
+    squares[7][0] = new Rook(7,0,white);
+    squares[7][2] = new Bishop(7,2,white);
+    squares[7][5] = new Bishop(7,5,white);
+    squares[7][1] = new Knight(7,1,white);
+    squares[7][6] = new Knight(7,6,white);
     
 /*
     for(int j{}; j < dim; ++j){
@@ -32,15 +32,15 @@ Board::Board(){
 */
     // *** BLACK PIECES ***
 
-    //squares[0][4] = new King(0,4,black);
+    squares[0][4] = new King(0,4,black);
     
-    //squares[0][3] = new Queen(0,3,black); // 0 3
-    //squares[0][7] = new Rook(0,7,black);
-    //squares[0][0] = new Rook(0,0,black);
-    //squares[0][2] = new Bishop(0,2,black);
-    //squares[0][5] = new Bishop(0,5,black);
-    //squares[0][1] = new Knight(0,1,black);
-    //squares[0][6] = new Knight(0,6,black);
+    squares[0][3] = new Queen(0,3,black); // 0 3
+    squares[0][7] = new Rook(0,7,black);
+    squares[0][0] = new Rook(0,0,black);
+    squares[0][2] = new Bishop(0,2,black);
+    squares[0][5] = new Bishop(0,5,black);
+    squares[0][1] = new Knight(0,1,black);
+    squares[0][6] = new Knight(0,6,black);
     
 /*
     for(int j{}; j < dim; ++j){
