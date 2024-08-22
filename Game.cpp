@@ -54,6 +54,8 @@ void Game::start(){
                         valid_move = board.getPiece(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
                     }
                     std::cout << "Valid move made." << std::endl;
+                    board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
+                    board.printBoard();
                 }
         }
 

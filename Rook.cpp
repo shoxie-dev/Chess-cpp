@@ -5,5 +5,10 @@ Rook::Rook(int x_param, int y_param, char colour_param) : Piece(x_param, y_param
 }
 
 bool Rook::isValidMove(int oldX, int oldY, int newX, int newY, const Board& board, char colour_param){
-    return true;
+    bool valid = false;
+    if((newX == oldX )||(newY == oldY)){
+        valid = true;    
+    }  
+
+    return valid;
 }
