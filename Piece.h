@@ -41,6 +41,10 @@ class Piece{
         char getColour(){
             return colour;
         }
+
+        void setCaptured(){
+            isCaptured = true;
+        }
     
 
 };

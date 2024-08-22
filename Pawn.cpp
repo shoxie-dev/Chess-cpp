@@ -9,7 +9,7 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, const Board& boar
 /*
     bool valid_M = false;
     if(colour_param == 'B'){
-        bool firstMoveB = true;
+        //bool firstMoveB = true; need to add an external function or smth
         if(firstMoveB == true){
             firstMoveB = false;
             if((oldX + 1 == newX && oldY == newY) || (oldX + 2 == newX && oldY == newY)){
@@ -26,7 +26,7 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, const Board& boar
     }
 
     if(colour_param == 'W'){
-        bool firstMoveW = true;
+        //bool firstMoveW = true;
         if(firstMoveW == true){
             firstMoveW = false;
             if((oldX - 1 == newX  && oldY == newY) || (oldX - 2 == newX  && oldY == newY)){
