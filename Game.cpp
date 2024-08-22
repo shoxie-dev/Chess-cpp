@@ -31,7 +31,7 @@ void Game::start(){
             std::pair<int,int> pieceXY = board.inputCoords();
             if(board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColor()){// btw if you pick nullptr it breaks so maybe
                 std::cout << "Valid piece selected." << std::endl;
-            }else{   
+            }else{ 
                 bool valid_piece = false;
                 while(valid_piece == false){
                     std::cout << "Invalid piece selected, select again." << std::endl;
@@ -47,7 +47,6 @@ void Game::start(){
                     board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
                     board.printBoard();
                 }else{
-                    std::cout << "Invalid move:" << std::endl;
                     bool valid_move = false;
                     while(valid_move == false){
                         std::cout << "Invalid move, select again.  " << std::endl;

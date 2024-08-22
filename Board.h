@@ -11,8 +11,8 @@ class Board{
         Board();
         void printBoard();
         void movePiece(int startX, int startY, int endX, int endY);
-        bool isCheck(bool isWhite) const;
-        bool isCheckmate(bool isWhite) const;
+        bool isCheck(char colour) const;
+        bool isCheckmate(char colour) const;
         /* TODO:
             implement stalemate
             implement checkmate
