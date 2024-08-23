@@ -31,6 +31,10 @@ class Board{
         Piece* getPiece(int x, int y){
             return squares[x][y];
         }
+
+        void setEmpty(int x, int y){
+            squares[x][y] = nullptr;
+        }
 };
 
 

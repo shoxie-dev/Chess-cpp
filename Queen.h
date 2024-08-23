@@ -13,7 +13,7 @@ class Queen : public Piece{
         virtual void display() override{
             std::cout << std::setw(2) << symbol_param;
         }
-        virtual bool isValidMove(int oldX, int oldY, int newX, int newY, const Board& board, char colour_param) override;
+        virtual bool isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param) override;
     
 };
 

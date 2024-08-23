@@ -4,7 +4,7 @@ Knight::Knight(int x_param, int y_param,char colour_param) : Piece(x_param,y_par
  
 }
 
-bool Knight::isValidMove(int oldX, int oldY, int newX, int newY, const Board& board, char colour_param){
+bool Knight::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param){
     bool valid = false;
     if((newX == oldX + 2) && (newY == oldY + 1)||(newX == oldX - 2) && (newY == oldY + 1)||(newX == oldX + 2) && (newY == oldY - 1)||(newX == oldX - 2) && (newY == oldY - 1)){
         valid = true;    

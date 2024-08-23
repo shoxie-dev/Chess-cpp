@@ -5,13 +5,10 @@ Pawn::Pawn(int x_param, int y_param,char colour_param) : Piece(x_param, y_param,
    
 }
 
-bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, const Board& board, char colour_param){
-/*
+bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param){
     bool valid_M = false;
     if(colour_param == 'B'){
-        //bool firstMoveB = true; need to add an external function or smth
-        if(firstMoveB == true){
-            firstMoveB = false;
+        if(board.squares[oldX][oldY]->getMoved() == false){
             if((oldX + 1 == newX && oldY == newY) || (oldX + 2 == newX && oldY == newY)){
                 valid_M = true;
             }
@@ -19,16 +16,13 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, const Board& boar
         }else{
             if(oldX + 1 == newX  && oldY == newY){
                 valid_M = true;
-            } else{
-                std::cout << "1 move only possible not two or you didnt move straight" << '\n';
-            }
+            } 
         }
     }
 
     if(colour_param == 'W'){
-        //bool firstMoveW = true;
-        if(firstMoveW == true){
-            firstMoveW = false;
+        
+        if(board.squares[oldX][oldY]->getMoved() == false){
             if((oldX - 1 == newX  && oldY == newY) || (oldX - 2 == newX  && oldY == newY)){
                 valid_M = true;
             }
@@ -36,15 +30,11 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, const Board& boar
         }else{
             if(oldX - 1 == newX  && oldY == newY){
                 valid_M = true;
-            } else{
-                std::cout << "1 move only possible not two or you didnt move straight" << '\n';
-            }
+            } 
         }
 
     }
     return valid_M;
-*/
-    return true;
 }
 
  
