@@ -42,7 +42,7 @@ void Game::start(){
             }
             std::cout << "Make move: " << '\n';
             std::pair<int,int> posXY = board.inputCoords();
-            bool valid_move = board.getPiece(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
+            bool valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
                 if(valid_move == true){
                     board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
                     board.printBoard();
@@ -51,7 +51,7 @@ void Game::start(){
                     while(valid_move == false){
                         std::cout << "Invalid move, select again.  " << '\n';
                         posXY = board.inputCoords();
-                        valid_move = board.getPiece(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
+                        valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
                     }
                     std::cout << "Valid move made." << '\n';
                     board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);

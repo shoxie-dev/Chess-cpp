@@ -23,7 +23,7 @@ class Piece{
             isMoved = false;
         }
 
-        virtual bool getMoved(){
+        virtual bool getisMoved(){
             return isMoved;
         }
 
