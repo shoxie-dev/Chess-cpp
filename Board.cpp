@@ -19,7 +19,7 @@ Board::Board(){
     
 //    squares[7][3] = new Queen(7,3,white); //7 3
 //    squares[7][7] = new Rook(7,7,white);
-    squares[3][1] = new Rook(3,1,white);
+    squares[3][5] = new Rook(3,5,white);
 //    squares[7][2] = new Bishop(7,2,white);
 //    squares[7][5] = new Bishop(7,5,white);
 //    squares[7][1] = new Knight(7,1,white);
@@ -35,8 +35,8 @@ Board::Board(){
     squares[0][4] = new King(0,4,black);
 
 //    squares[0][3] = new Queen(0,3,black); // 0 3
-    squares[3][3] = new Rook(3,3,black);
-    squares[3][4] = new Rook(3,4,black);
+    squares[3][1] = new Rook(3,1,black);
+    squares[3][0] = new Rook(3,0,black);
 //    squares[0][2] = new Bishop(0,2,black);
 //    squares[0][5] = new Bishop(0,5,black);
 //    squares[0][1] = new Knight(0,1,black);
@@ -69,7 +69,7 @@ void Board::printBoard(){
                 std::cout << std::setw(2) << '.';
             }
             else {
-                squares[i][j]->display();
+                getSquare(i,j)->display();
             }          
         }
         std::cout << '\n';
@@ -79,7 +79,7 @@ void Board::printBoard(){
 void Board::movePiece(int startX, int startY, int endX, int endY){
     if(getSquare(endX,endY)!=nullptr){
         if(getSquare(startX,startY)->getSymbol() != getSquare(endX,endY)->getSymbol() ){// code for when a piece is getting taken
-            setEmpty(endX,endY);// if a segfault occurs its this probably
+            setEmpty(endX,endY);
         }
     }   
 

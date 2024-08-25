@@ -5,7 +5,7 @@
 
 class Board{
     public:
-        Piece* squares[8][8]{nullptr};
+        //Piece* squares[8][8]{nullptr};
         //Piece* squares_t[8][8]{nullptr};
 
         Board();
@@ -36,6 +36,10 @@ class Board{
             delete squares[x][y];
             squares[x][y] = nullptr;
         }
+    
+        Piece* squares[8][8]{nullptr};
+
+        
 };
 
 
