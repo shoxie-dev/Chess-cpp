@@ -53,7 +53,7 @@ bool Bishop::isValidMove(int oldX, int oldY, int newX, int newY, Board& board,ch
         }
     } 
     if(newY == -newX + dC){
-        std::cout << "inside else if" << std::endl;
+        //std::cout << "inside else if" << std::endl;
         int n = newY - oldY;
         if(n > 0){//rhs of the piece
             std::cout << "n > 0" << '\n';

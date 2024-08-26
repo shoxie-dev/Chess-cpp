@@ -17,7 +17,7 @@ Board::Board(){
 
 //    squares[7][4] = new King(7,4,white);
     
-//    squares[7][3] = new Queen(7,3,white); //7 3
+    squares[7][0] = new Queen(7,0,white); //7 3
 //    squares[7][7] = new Rook(7,7,white);
 //    squares[6][1] = new Rook(6,1,white);
     squares[4][4] = new Bishop(4,4,white);
