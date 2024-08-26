@@ -8,7 +8,7 @@ Pawn::Pawn(int x_param, int y_param,char colour_param) : Piece(x_param, y_param,
 bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param){
     bool valid_M = false;
     if(colour_param == 'B'){
-        if(board.squares[oldX][oldY]->getisMoved() == false){
+        if(board.getSquare(oldX,oldY)->getisMoved() == false){
             if((oldX + 1 == newX && oldY == newY) || (oldX + 2 == newX && oldY == newY)){
                 valid_M = true;
             }
@@ -22,7 +22,7 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
 
     if(colour_param == 'W'){
         
-        if(board.squares[oldX][oldY]->getisMoved() == false){
+        if(board.getSquare(oldX,oldY)->getisMoved() == false){
             if((oldX - 1 == newX  && oldY == newY) || (oldX - 2 == newX  && oldY == newY)){
                 valid_M = true;
             }

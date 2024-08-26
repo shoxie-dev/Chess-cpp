@@ -16,8 +16,8 @@ bool Rook::isValidMove(int oldX, int oldY, int newX, int newY,Board& board, char
                 //<= newY: to go a specific point and not end before the point
                 if(board.getSquare(oldX,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
-                    if(j==newY){// capture logic: j will never be equal to newY if a piece gets found between the two points only if at the point newY is a piece.
-                        if(board.getSquare(oldX,oldY)->getSymbol() != board.getSquare(oldX,newY)->getSymbol() ){
+                    if(j==newY){// capture logic
+                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
                             valid = true;
                         }
                     }
@@ -36,8 +36,8 @@ bool Rook::isValidMove(int oldX, int oldY, int newX, int newY,Board& board, char
                 //>= newY: to go a specific point and not end before the point
                 if(board.getSquare(oldX,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
-                    if(j==newY){// capture logic: j will never be equal to newY if a piece gets found between the two points only if at the point newY is a piece.
-                        if(board.getSquare(oldX,oldY)->getSymbol() != board.getSquare(oldX,newY)->getSymbol() ){
+                    if(j==newY){// capture logic
+                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
                             valid = true;
                         }
                     }
@@ -49,10 +49,43 @@ bool Rook::isValidMove(int oldX, int oldY, int newX, int newY,Board& board, char
             
         }
           
-    } else if(newY == oldY){
-        
+    } 
+    
+    if(newY == oldY){
+        int n = newX - oldX;
+        std::cout << "n : " << n << '\n';
+        if(n > 0){ 
+            for(int i{oldX + 1}; i <= newX; ++i){
+                if(board.getSquare(i,oldY)!=nullptr){// checks gap between two points excluding the beginning and ending points
+                    valid = false;
+                    if(i==newX){// capture logic
+                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                            valid = true;
+                        }
+                    }
+                    break;
+                }else if(board.getSquare(i,oldY) == nullptr){
+                    valid = true;
+                }
+            }
 
-    }  
+        }
+        if(n < 0){
+            for(int i{oldX-1}; i >= newX ; --i){
+                if(board.getSquare(i,oldY)!=nullptr){// checks gap between two points excluding the beginning and ending points
+                    valid = false;
+                    if(i == newX){// capture logic
+                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                            valid = true;
+                        }
+                    }
+                    break;
+                }else if(board.getSquare(i,oldY) == nullptr){
+                    valid = true;
+                }
+            }
 
+        }
+    }
     return valid;
 }

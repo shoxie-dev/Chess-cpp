@@ -23,11 +23,11 @@ class Piece{
             isMoved = false;
         }
 
-        virtual bool getisMoved(){
+        bool getisMoved(){
             return isMoved;
         }
 
-        virtual void setMoved(){
+        void setMoved(){
             isMoved = true;
         }
         virtual void display() = 0;
@@ -54,6 +54,9 @@ class Piece{
 
         void setCaptured(){
             isCaptured = true;
+        }
+        bool getCaptured(){
+            return isCaptured;
         }
     
 

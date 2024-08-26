@@ -5,7 +5,7 @@
 
 class Board{
     public:
-        //Piece* squares[8][8]{nullptr};
+        Piece* squares[8][8]{nullptr};
         //Piece* squares_t[8][8]{nullptr};
 
         Board();
@@ -20,13 +20,14 @@ class Board{
             std::cin >> XY.second;
             return XY;
         }
-
+        
         char getSymbolB(int x,int y){// B is board
             return squares[x][y]->getSymbol();
         }
         char getColourB(int x,int y){
             return squares[x][y]->getColour();
         }
+        
 
         Piece* getSquare(int x, int y){
             return squares[x][y];
@@ -37,7 +38,6 @@ class Board{
             squares[x][y] = nullptr;
         }
     
-        Piece* squares[8][8]{nullptr};
 
         
 };

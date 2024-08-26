@@ -19,9 +19,9 @@ Board::Board(){
     
 //    squares[7][3] = new Queen(7,3,white); //7 3
 //    squares[7][7] = new Rook(7,7,white);
-    squares[3][5] = new Rook(3,5,white);
-//    squares[7][2] = new Bishop(7,2,white);
-//    squares[7][5] = new Bishop(7,5,white);
+//    squares[6][1] = new Rook(6,1,white);
+    squares[4][4] = new Bishop(4,4,white);
+//    squares[6][6] = new Bishop(6,6,white);
 //    squares[7][1] = new Knight(7,1,white);
 //    squares[7][6] = new Knight(7,6,white);
    
@@ -32,13 +32,13 @@ Board::Board(){
 */
     // *** BLACK PIECES ***
 
-    squares[0][4] = new King(0,4,black);
+//    squares[0][4] = new King(0,4,black);
 
-//    squares[0][3] = new Queen(0,3,black); // 0 3
-    squares[3][1] = new Rook(3,1,black);
-    squares[3][0] = new Rook(3,0,black);
-//    squares[0][2] = new Bishop(0,2,black);
-//    squares[0][5] = new Bishop(0,5,black);
+    squares[1][7] = new Queen(1,7,black); // 0 3
+    squares[0][0] = new Rook(0,0,black);
+    squares[7][1] = new Rook(7,1,black);
+    squares[7][7] = new Bishop(7,7,black);
+    squares[6][6] = new Bishop(6,6,black);
 //    squares[0][1] = new Knight(0,1,black);
 //    squares[0][6] = new Knight(0,6,black);
 
