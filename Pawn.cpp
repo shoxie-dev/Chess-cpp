@@ -6,16 +6,42 @@ Pawn::Pawn(int x_param, int y_param,char colour_param) : Piece(x_param, y_param,
 }
 
 bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param){
-    bool valid_M = false;
+    bool valid = false;
     if(colour_param == 'B'){
-        if(board.getSquare(oldX,oldY)->getisMoved() == false){
-            if((oldX + 1 == newX && oldY == newY) || (oldX + 2 == newX && oldY == newY)){
-                valid_M = true;
+        if(board.getSquare(oldX,oldY)->getisMoved() == false){// strictly movement
+            if((newX == oldX + 1 && newY == oldY) || (newX == oldX + 2 && newY == oldY)){
+                if(board.getSquare(newX,newY)!=nullptr){// checks desitination point
+                    valid = false;
+                }else if(board.getSquare(newX,newY) == nullptr){
+                    valid = true;
+                    //if(newX == oldX + 2) then assignt set_en_passant == true
+                }   
             }
+
+            if(newX == oldX + 1 && newY == oldY + 1 || newX == oldX + 1 && newY == oldY - 1){// standard capture logic will add logic for en passant capture
+                if(board.getSquare(newX,newY) != nullptr){
+                    if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                        valid = true;
+                    }
+                }
+                //TODO : add en passant code here
+            } 
             
         }else{
-            if(oldX + 1 == newX  && oldY == newY){
-                valid_M = true;
+            if(newX == oldX + 1  && newY == oldY){
+                if(board.getSquare(newX,newY)!=nullptr){// checks desitination point
+                    valid = false;
+                }else if(board.getSquare(newX,newY) == nullptr){
+                valid = true;
+                }  
+            }
+            if(newX == oldX + 1 && newY == oldY + 1 || newX == oldX + 1 && newY == oldY - 1){
+                if(board.getSquare(newX,newY) != nullptr){
+                    if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){// capture logic
+                        valid = true;
+                    }
+                }
+                //TODO : add en passant code here
             } 
         }
     }
@@ -23,18 +49,45 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
     if(colour_param == 'W'){
         
         if(board.getSquare(oldX,oldY)->getisMoved() == false){
-            if((oldX - 1 == newX  && oldY == newY) || (oldX - 2 == newX  && oldY == newY)){
-                valid_M = true;
+            if((newX == oldX - 1 && newY == oldY) || (newX == oldX - 2   && newY == oldY)){
+                if(board.getSquare(newX,newY)!=nullptr){// checks desitination point
+                    valid = false;
+                }else if(board.getSquare(newX,newY) == nullptr){
+                    valid = true;
+                }   
             }
+
+            if(newX == oldX - 1 && newY == oldY + 1 || newX == oldX - 1 && newY == oldY - 1){
+                if(board.getSquare(newX,newY) != nullptr){
+                    if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){// capture logic
+                        valid = true;
+                    }
+                }
+                //TODO : add en passant code here
+            } 
+
             
         }else{
-            if(oldX - 1 == newX  && oldY == newY){
-                valid_M = true;
-            } 
+            if(newX == oldX - 1 && newY == oldY){
+                if(board.getSquare(newX,newY)!=nullptr){// checks desitination point
+                    valid = false;
+                }else if(board.getSquare(newX,newY) == nullptr){
+                    valid = true;
+                }   
+            }
+
+            if(newX == oldX - 1 && newY == oldY + 1 || newX == oldX - 1 && newY == oldY - 1){// capture logic
+                if(board.getSquare(newX,newY) != nullptr){
+                    if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                        valid = true;
+                    }
+                }
+                //TODO : add en passant code here
+            }  
         }
 
     }
-    return valid_M;
+    return valid;
 }
 
  

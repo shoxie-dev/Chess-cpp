@@ -17,36 +17,36 @@ Board::Board(){
 
 //    squares[7][4] = new King(7,4,white);
     
-    squares[7][0] = new Queen(7,0,white); //7 3
+//    squares[6][4] = new Queen(6,4,white); //7 3
 //    squares[7][7] = new Rook(7,7,white);
 //    squares[6][1] = new Rook(6,1,white);
-    squares[4][4] = new Bishop(4,4,white);
+//    squares[4][4] = new Bishop(4,4,white);
 //    squares[6][6] = new Bishop(6,6,white);
-//    squares[7][1] = new Knight(7,1,white);
+//    squares[4][3] = new Knight(4,3,white);
 //    squares[7][6] = new Knight(7,6,white);
    
-/*
+
     for(int j{}; j < dim; ++j){
         squares[6][j] = new Pawn(6,j,white);
     }
-*/
+
     // *** BLACK PIECES ***
 
 //    squares[0][4] = new King(0,4,black);
 
-    squares[1][7] = new Queen(1,7,black); // 0 3
-    squares[0][0] = new Rook(0,0,black);
-    squares[7][1] = new Rook(7,1,black);
-    squares[7][7] = new Bishop(7,7,black);
-    squares[6][6] = new Bishop(6,6,black);
+//    squares[2][4] = new Queen(2,4,black); // 0 3
+//    squares[0][0] = new Rook(0,0,black);
+//    squares[7][1] = new Rook(7,1,black);
+//    squares[7][7] = new Bishop(7,7,black);
+//    squares[6][6] = new Bishop(6,6,black);
 //    squares[0][1] = new Knight(0,1,black);
 //    squares[0][6] = new Knight(0,6,black);
 
-/*
+
     for(int j{}; j < dim; ++j){
         squares[1][j] = new Pawn(1,j,black);
     }
-*/
+
 
     
 /*  

@@ -11,7 +11,6 @@ class Piece{
     public:
         char symbol;
         char colour;
-        bool isCaptured; 
         bool isMoved;
         int x,y;
         Piece(int x_param, int y_param,char symbol_param, char colour_param){
@@ -19,7 +18,6 @@ class Piece{
             y = y_param;
             symbol = symbol_param;
             colour = colour_param;
-            isCaptured = false;
             isMoved = false;
         }
 
@@ -52,12 +50,6 @@ class Piece{
             return colour;
         }
 
-        void setCaptured(){
-            isCaptured = true;
-        }
-        bool getCaptured(){
-            return isCaptured;
-        }
     
 
 };
