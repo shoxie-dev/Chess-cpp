@@ -11,10 +11,10 @@ bool King::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
     if((newX == oldX - 1) && (newY == oldY)||(newX == oldX) && (newY == oldY + 1)||(newX == oldX + 1) && (newY == oldY)||(newX == oldX) && (newY == oldY - 1)){
         if(board.getSquare(newX,newY)!=nullptr){// checks desitination point and needs a different functio
             valid = false;
-            if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){// capture logic
+            if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){// capture logic also needs isKingSafe(newX,newY)
                 valid = true;
             }
-        }else if(board.getSquare(newX,newY) == nullptr){
+        }else if(board.getSquare(newX,newY) == nullptr){// isKingSafe(newX,newY)
             valid = true;
         }    
     }  
