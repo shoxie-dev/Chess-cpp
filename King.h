@@ -15,9 +15,7 @@ class King : public Piece{
         }
         virtual bool isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param) override;
 
-        void print(){
-            std::cout << "kek " << '\n';
-        }
+        bool isKingSafe(int oldX, int oldY, int newX, int newY, Board& board); 
     
 };
 

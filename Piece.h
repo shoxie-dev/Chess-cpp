@@ -30,6 +30,7 @@ class Piece{
         }
         virtual void display() = 0;
         virtual bool isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param) = 0;
+        //virtual bool isKingSafe(int newX,int newY, Board& board) = 0; 
         void setPosition(int newX,int newY){
             x = newX;
             y = newY;
@@ -49,6 +50,8 @@ class Piece{
         char getColour(){
             return colour;
         }
+
+
 
     
 

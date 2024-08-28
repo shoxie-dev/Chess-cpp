@@ -6,7 +6,7 @@
 class Board{
     public:
         Piece* squares[8][8]{nullptr};
-        //Piece* squares_t[8][8]{nullptr};
+        //char squares_t[8][8]{nullptr};
 
         Board();
         void printBoard();
@@ -31,6 +31,10 @@ class Board{
 
         Piece* getSquare(int x, int y){
             return squares[x][y];
+        }
+
+        void setNull(int x, int y){
+            squares[x][y] = nullptr;
         }
 
         void setEmpty(int x, int y){
