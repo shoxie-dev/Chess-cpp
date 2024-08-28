@@ -14,17 +14,20 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
                     valid = false;
                 }else if(board.getSquare(newX,newY) == nullptr){
                     valid = true;
-                    //if(newX == oldX + 2) then assignt set_en_passant == true
+                    if(newX == oldX + 2 && newY == oldY){
+                        std::cout << "En passant active" << '\n';
+                        board.getSquare(oldX,oldY)->setenPassant(true);
+                    }
                 }   
             }
 
-            if(newX == oldX + 1 && newY == oldY + 1 || newX == oldX + 1 && newY == oldY - 1){// standard capture logic will add logic for en passant capture
+            if(newX == oldX + 1 && newY == oldY + 1 || newX == oldX + 1 && newY == oldY - 1){
                 if(board.getSquare(newX,newY) != nullptr){
                     if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
                         valid = true;
                     }
                 }
-                //TODO : add en passant code here
+
             } 
             
         }else{
@@ -32,16 +35,44 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
                 if(board.getSquare(newX,newY)!=nullptr){// checks desitination point
                     valid = false;
                 }else if(board.getSquare(newX,newY) == nullptr){
-                valid = true;
+                    valid = true;
+                    board.getSquare(oldX,oldY)->setenPassant(false);
                 }  
             }
             if(newX == oldX + 1 && newY == oldY + 1 || newX == oldX + 1 && newY == oldY - 1){
                 if(board.getSquare(newX,newY) != nullptr){
                     if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){// capture logic
                         valid = true;
+                        board.getSquare(oldX,oldY)->setenPassant(false);
                     }
                 }
-                //TODO : add en passant code here
+                //En_Passant capture
+                if(board.getSquare(oldX,oldY - 1) != nullptr){
+                    if(board.getColourB(oldX,oldY) != board.getColourB(oldX,oldY - 1)){
+                        if(board.getSquare(oldX,oldY - 1) -> getenPassant() == true){
+                            if(board.getSquare(newX - 1, newY) != nullptr){
+                                if(board.getSquare(newX - 1,newY)->getSymbol() == 'P'){
+                                    valid = true;
+                                    board.getSquare(oldX,oldY)->setenPassant(false);
+                                    board.getSquare(oldX,oldY)->setenPassant_capture();
+                                }
+                            }
+                        }                          
+                    }
+                }
+                if(board.getSquare(oldX,oldY + 1) != nullptr){
+                    if(board.getColourB(oldX,oldY) != board.getColourB(oldX,oldY + 1) ){
+                        if(board.getSquare(oldX,oldY + 1) -> getenPassant() == true ){
+                            if(board.getSquare(newX - 1, newY) != nullptr){
+                                if(board.getSquare(newX - 1,newY)->getSymbol() == 'P'){
+                                    valid = true;
+                                    board.getSquare(oldX,oldY)->setenPassant(false);
+                                    board.getSquare(oldX,oldY)->setenPassant_capture();
+                                }
+                            }
+                        }                          
+                    }
+                }
             } 
         }
     }
@@ -54,6 +85,10 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
                     valid = false;
                 }else if(board.getSquare(newX,newY) == nullptr){
                     valid = true;
+                    if(newX == oldX - 2 && newY == oldY){
+                        std::cout << "En passant active" << '\n';
+                        board.getSquare(oldX,oldY)->setenPassant(true);
+                    }
                 }   
             }
 
@@ -63,7 +98,6 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
                         valid = true;
                     }
                 }
-                //TODO : add en passant code here
             } 
 
             
@@ -73,6 +107,7 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
                     valid = false;
                 }else if(board.getSquare(newX,newY) == nullptr){
                     valid = true;
+                    board.getSquare(oldX,oldY)->setenPassant(false);
                 }   
             }
 
@@ -82,7 +117,33 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
                         valid = true;
                     }
                 }
-                //TODO : add en passant code here
+                //En_Passant capture 
+                if(board.getSquare(oldX,oldY - 1) != nullptr){
+                    if(board.getColourB(oldX,oldY) != board.getColourB(oldX,oldY - 1)){
+                        if(board.getSquare(oldX,oldY - 1) -> getenPassant()==true){
+                            if(board.getSquare(newX + 1, newY) != nullptr){
+                                if(board.getSquare(newX + 1,newY)->getSymbol() == 'p'){
+                                    valid = true;
+                                    board.getSquare(oldX,oldY)->setenPassant(false);
+                                    board.getSquare(oldX,oldY)->setenPassant_capture();
+                                }
+                            }
+                        }                          
+                    }
+                }
+                if(board.getSquare(oldX,oldY + 1) != nullptr){
+                    if(board.getColourB(oldX,oldY) != board.getColourB(oldX,oldY + 1) ){
+                        if(board.getSquare(oldX,oldY + 1) -> getenPassant()==true ){
+                            if(board.getSquare(newX + 1, newY) != nullptr){
+                                if(board.getSquare(newX + 1,newY)->getSymbol() == 'p'){
+                                    valid = true;
+                                    board.getSquare(oldX,oldY)->setenPassant(false);
+                                    board.getSquare(oldX,oldY)->setenPassant_capture();
+                                }
+                            }
+                        }                          
+                    }
+                }
             }  
         }
 
