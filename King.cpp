@@ -58,6 +58,29 @@ bool King::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
             valid = true;
         }    
     }
+
+    //castling code
+    if(newX == oldX && newY == oldY - 2){
+        if(board.getSquare(oldX, oldY) != nullptr && board.getSquare(oldX , 0) != nullptr){//lhs rook
+            if(isKingSafe(oldX, oldY, oldX, oldY-2,board) && board.getSquare(oldX,oldY)->getisMoved()==false && board.getSquare(oldX,0)->getisMoved()==false){
+                if(board.getSquare(oldX, oldY - 1) == nullptr && board.getSquare(oldX, oldY - 2) == nullptr && board.getSquare(oldX, oldY - 3)== nullptr){
+                    valid = true;
+                    board.getSquare(oldX,oldY)->setCastled();
+                }
+            }
+        }
+    } else if(newX == oldX && newY == oldY + 2){
+        if(board.getSquare(oldX, oldY) != nullptr && board.getSquare(oldX , 7) != nullptr){//lhs rook
+            if(isKingSafe(oldX, oldY, oldX, oldY + 2,board) && board.getSquare(oldX,oldY)->getisMoved()==false && board.getSquare(oldX,7)->getisMoved()==false){
+                if(board.getSquare(oldX, oldY + 1) == nullptr && board.getSquare(oldX, oldY + 2) == nullptr){
+                    valid = true;
+                    board.getSquare(oldX,oldY)->setCastled();
+                }
+            }
+        }
+
+    }
+
     return valid;
 }
 

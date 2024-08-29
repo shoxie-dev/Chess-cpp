@@ -11,7 +11,7 @@ class Piece{
     public:
         char symbol;
         char colour;
-        bool isMoved, enPassant, capture_enPassant;
+        bool isMoved, enPassant, capture_enPassant, castling_var;
         int x,y;
         Piece(int x_param, int y_param,char symbol_param, char colour_param){
             x = x_param;
@@ -21,6 +21,7 @@ class Piece{
             isMoved = false;
             enPassant = false;
             capture_enPassant = false;
+            castling_var = false;
         }
 
         bool getisMoved(){
@@ -42,6 +43,15 @@ class Piece{
         void setenPassant_capture(){
             capture_enPassant = true;
         }
+
+        void setCastled(){
+            castling_var = true;
+        }
+
+        bool getCastled(){
+            return castling_var;
+        }
+
 
         virtual void display() = 0;
         virtual bool isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param) = 0;

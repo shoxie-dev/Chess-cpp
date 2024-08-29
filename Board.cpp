@@ -15,37 +15,39 @@ Board::Board(){
 
     // *** WHITE PIECES ***
 
-//    squares[7][4] = new King(7,4,white);
+    squares[7][4] = new King(7,4,white);
     
 //    squares[6][4] = new Queen(6,4,white); //7 3
-//    squares[6][3] = new Rook(6,3,white);
-//    squares[6][1] = new Rook(6,1,white);
+    squares[7][0] = new Rook(7,0,white);
+    squares[7][7] = new Rook(7,7,white);
 //    squares[4][4] = new Bishop(4,4,white);
 //    squares[6][6] = new Bishop(6,6,white);
-//    squares[4][3] = new Knight(4,3,white);
-//    squares[7][6] = new Knight(7,6,white);
+//    squares[7][1] = new Knight(7,1,white);
+//    squares[7][5] = new Knight(7,5,white);
    
-
+/*
     for(int j{}; j < dim; ++j){
         squares[6][j] = new Pawn(6,j,white);
     }
+*/
 
     // *** BLACK PIECES ***
 
-//    squares[0][4] = new King(0,4,black);
+    squares[0][4] = new King(0,4,black);
 
 //    squares[2][4] = new Queen(2,4,black); // 0 3
-//    squares[0][5] = new Rook(0,5,black);
-//    squares[0][3] = new Rook(0,3,black);
+    squares[0][0] = new Rook(0,0,black);
+    squares[0][7] = new Rook(0,7,black);
 //    squares[6][5] = new Bishop(6,5,black);
 //    squares[6][6] = new Bishop(6,6,black);
-//    squares[0][1] = new Knight(0,1,black);
-//    squares[0][6] = new Knight(0,6,black);
+    squares[0][1] = new Knight(0,1,black);
+    squares[0][6] = new Knight(0,6,black);
 
-
+/*
     for(int j{}; j < dim; ++j){
         squares[1][j] = new Pawn(1,j,black);
     }
+*/
 
 
 
@@ -84,7 +86,7 @@ void Board::movePiece(int startX, int startY, int endX, int endY){
         }
     }
 
-    if(getSquare(startX,startY)->capture_enPassant == true){
+    if(getSquare(startX,startY)->capture_enPassant == true){// code for en passant capture
         std::cout << "inside enPassant movePiece code" << '\n';
         if(getSquare(startX,startY)->getColour() == 'W'){
             setEmpty(endX+1,endY);
@@ -93,6 +95,26 @@ void Board::movePiece(int startX, int startY, int endX, int endY){
         if(getSquare(startX,startY)->getColour() == 'B'){
             std::cout << "inside enPassant movePiece black" << '\n';
             setEmpty(endX-1,endY);    
+        }
+    }
+
+    if(getSquare(startX, startY)->getCastled() == true && getCastle_onceW() == true){
+        setCastle_onceW();
+        if(startY > endY){
+            squares[endX][startY-1] = squares[endX][0];
+            squares[endX][0] = nullptr;
+        }else if(startY < endY){
+            squares[endX][startY+1] = squares[endX][7];
+            squares[endX][7] = nullptr;
+        }
+    } else if(getSquare(startX, startY)->getCastled() == true && getCastle_onceB() == true){
+        setCastle_onceB();
+        if(startY > endY){
+            squares[endX][startY-1] = squares[endX][0];
+            squares[endX][0] = nullptr;
+        }else if(startY < endY){
+            squares[endX][startY+1] = squares[endX][7];
+            squares[endX][7] = nullptr;
         }
     }
 
