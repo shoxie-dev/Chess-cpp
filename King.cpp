@@ -18,16 +18,21 @@ bool King::isKingSafe(int oldX, int oldY,int newX, int newY, Board& board){
                 if(board.getColourB(oldX,oldY) != board.getColourB(i, j)){ // this assumes square is empty
                     attack_colour = board.getColourB(i, j);
                     if(board.getSquare(i, j)->isValidMove(i, j, newX, newY, board, attack_colour)){
-                        return false;
+                        safe = false;
+                        break;
                     }
                     if(board.getSquare(newX, newY) != nullptr){//if square is not empty.
                         board_copy.setNull(newX,newY);
                         if(board.getSquare(i, j)->isValidMove(i, j, newX, newY, board_copy, attack_colour)){
-                            return false;
+                            safe =  false;
+                            break;
                         }
                     }
                 }
             }
+        }
+        if(safe == false){// to break out of outer loop
+            break;
         }
     }
 

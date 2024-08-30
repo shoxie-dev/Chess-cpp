@@ -6,12 +6,12 @@
 class Board{
     public:
         Piece* squares[8][8]{nullptr};
-        //char squares_t[8][8]{nullptr};
 
         Board();
         void printBoard();
         void movePiece(int startX, int startY, int endX, int endY);
-        bool isCheck(char colour) const;
+        void pawnPromotion(char colour);
+        bool isCheck(char colour, int& k_x, int& k_y);
         bool isCheckmate(char colour) const;
         bool castle_onceW = true;
         bool castle_onceB = true;
@@ -31,6 +31,9 @@ class Board{
             return squares[x][y]->getColour();
         }
         
+        void setSquare(Piece* piece, int x, int y){
+            squares[x][y] = piece;
+        }
 
         Piece* getSquare(int x, int y){
             return squares[x][y];
@@ -40,7 +43,7 @@ class Board{
             squares[x][y] = nullptr;
         }
 
-        void setEmpty(int x, int y){
+        void setTaken(int x, int y){
             delete squares[x][y];
             squares[x][y] = nullptr;
         }
