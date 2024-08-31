@@ -77,8 +77,10 @@ void Game::start(){
                     }
                     king_checkmate = board.isCheckmate(currentPlayer->getColor());
                     if(king_checkmate == true){
+                        std::cout << "Player " << currentPlayer->getColor() << " wins" <<'\n';
                         break;
                     }
+
                     board.pawnPromotion(currentPlayer->getColor());
                 }else{
                     bool valid_move = false;
@@ -97,6 +99,7 @@ void Game::start(){
                     }
                     king_checkmate = board.isCheckmate(currentPlayer->getColor());
                     if(king_checkmate == true){
+                        std::cout << "Player " << currentPlayer->getColor() << " wins" <<'\n';
                         break;
                     }
                     board.pawnPromotion(currentPlayer->getColor());

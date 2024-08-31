@@ -17,38 +17,38 @@ Board::Board(){//x y (is default positions)
 
     squares[7][4] = new King(7,4,white); // 7 4
     
-    squares[1][5] = new Queen(1,5,white); //7 3
-//    squares[7][0] = new Rook(7,0,white); // 7 0
-//    squares[7][7] = new Rook(7,7,white); // 7 7
-//    squares[7][2] = new Bishop(7,2,white); // 7 2
-//    squares[7][5] = new Bishop(7,5,white); // 7 5
-//    squares[7][1] = new Knight(7,1,white); // 7 1
-//    squares[7][6] = new Knight(7,6,white); // 7 6
+   squares[7][3] = new Queen(7,3,white); //7 3
+    squares[7][0] = new Rook(7,0,white); // 7 0
+    squares[7][7] = new Rook(7,7,white); // 7 7
+    squares[7][2] = new Bishop(7,2,white); // 7 2
+    squares[7][5] = new Bishop(7,5,white); // 7 5
+    squares[7][1] = new Knight(7,1,white); // 7 1
+    squares[7][6] = new Knight(7,6,white); // 7 6
    
-/*
+
     for(int j{}; j < dim; ++j){
         squares[6][j] = new Pawn(6,j,white);
     }
-*/
+
 
 
     // *** BLACK PIECES ***
 
-    squares[0][0] = new King(0,0,black); //0 4
+    squares[0][4] = new King(0,4,black); //0 4
 
-//    squares[0][3] = new Queen(0,3,black); // 0 3
-//    squares[0][0] = new Rook(0,0,black); // 0 0
-//    squares[0][7] = new Rook(0,7,black); // 0 7
-//    squares[0][5] = new Bishop(0,5,black); // 0 5
-//    squares[0][2] = new Bishop(0,2,black); // 0 2
-//    squares[0][1] = new Knight(0,1,black); // 0 1
-//    squares[0][6] = new Knight(0,6,black); // 0 6
+    squares[0][3] = new Queen(0,3,black); // 0 3
+    squares[0][0] = new Rook(0,0,black); // 0 0
+    squares[0][7] = new Rook(0,7,black); // 0 7
+   squares[0][5] = new Bishop(0,5,black); // 0 5
+    squares[0][2] = new Bishop(0,2,black); // 0 2
+    squares[0][1] = new Knight(0,1,black); // 0 1
+    squares[0][6] = new Knight(0,6,black); // 0 6
 
-/*
+
     for(int j{}; j < dim; ++j){
         squares[1][j] = new Pawn(1,j,black);
     }
-*/
+
 }
 
 
@@ -358,7 +358,6 @@ bool Board::isCheckmate(char colour){//attacking colour
 
         if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
             king_checkmate = true;
-            std::cout << "Checkmate: white wins" << '\n';
         }
 
 
@@ -430,7 +429,6 @@ bool Board::isCheckmate(char colour){//attacking colour
 
         if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
             king_checkmate = true;
-            std::cout << "Checkmate: white wins" << '\n';
         }
 
     }
