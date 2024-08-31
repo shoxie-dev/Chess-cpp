@@ -17,8 +17,8 @@ Board::Board(){//x y (is default positions)
 
     squares[7][4] = new King(7,4,white); // 7 4
     
-//    squares[7][3] = new Queen(7,3,white); //7 3
-    squares[7][0] = new Rook(7,0,white); // 7 0
+    squares[1][5] = new Queen(1,5,white); //7 3
+//    squares[7][0] = new Rook(7,0,white); // 7 0
 //    squares[7][7] = new Rook(7,7,white); // 7 7
 //    squares[7][2] = new Bishop(7,2,white); // 7 2
 //    squares[7][5] = new Bishop(7,5,white); // 7 5
@@ -34,11 +34,11 @@ Board::Board(){//x y (is default positions)
 
     // *** BLACK PIECES ***
 
-    squares[0][4] = new King(0,4,black); //0 4
+    squares[0][0] = new King(0,0,black); //0 4
 
 //    squares[0][3] = new Queen(0,3,black); // 0 3
 //    squares[0][0] = new Rook(0,0,black); // 0 0
-    squares[0][7] = new Rook(0,7,black); // 0 7
+//    squares[0][7] = new Rook(0,7,black); // 0 7
 //    squares[0][5] = new Bishop(0,5,black); // 0 5
 //    squares[0][2] = new Bishop(0,2,black); // 0 2
 //    squares[0][1] = new Knight(0,1,black); // 0 1
@@ -286,6 +286,252 @@ bool Board::isCheck(char colour,int& k_x, int& k_y){//player colour and coordina
     return king_check;
 }
 
+bool Board::isCheckmate(char colour){//attacking colour
+
+    bool king_checkmate{false};
+
+    if(colour == 'B'){//check if W is checkmated
+        bool found{false};
+        int k_x{};
+        int k_y{};
+        bool b1{false};
+        bool b2{false};
+        bool b3{false};
+        bool b4{false};
+        bool b5{false};
+        bool b6{false};
+        bool b7{false};
+        bool b8{false};
+        for(int i{}; i < 8; ++i){
+            for(int j{}; j < 8; ++j){
+                if(getSquare(i,j) != nullptr && getSymbolB(i, j) == 'K'){
+                    k_x = i;
+                    k_y = j;
+                    found = true;
+                    break;
+                }
+            }
+            if(found == true){
+                break;
+            }
+        }
+        
+        if(k_x - 1 >= 0){
+            
+            if((k_y - 1)>=0){
+                b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
+                
+            }
+            if(k_y + 1 < 8){
+                b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
+                  
+            }
+            b3 = isKingSafeB(k_x, k_y, k_x - 1, k_y);
+            
+        }
+
+        if( (k_x + 1 < 8) ){
+            
+            if((k_y - 1)>= 0){
+                b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
+                
+            }
+            if(k_y + 1 < 8){
+                b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
+                   
+            }
+            b6 = isKingSafeB(k_x, k_y, k_x + 1, k_y);
+           
+
+        }
+
+        if(k_y - 1 >= 0){//k_x
+            b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
+            
+        }
+        if(k_y + 1 < 8){
+           b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
+            std::cout << "b8 : " << b8 << '\n';
+        }
+
+        // i think this is probably the worst thing i have ever coded, lord please forgive me
+
+        if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
+            king_checkmate = true;
+            std::cout << "Checkmate: white wins" << '\n';
+        }
+
+
+    }else if(colour == 'W'){//check if B is checkmated
+        bool found{false};
+        int k_x{};
+        int k_y{};
+        bool b1{false};
+        bool b2{false};
+        bool b3{false};
+        bool b4{false};
+        bool b5{false};
+        bool b6{false};
+        bool b7{false};
+        bool b8{false};
+        for(int i{}; i < 8; ++i){
+            for(int j{}; j < 8; ++j){
+                if(getSquare(i,j) != nullptr && getSymbolB(i, j) == 'k'){
+                    k_x = i;
+                    k_y = j;
+                    found = true;
+                    break;
+                }
+            }
+            if(found == true){
+                break;
+            }
+        }
+        
+        if(k_x - 1 >= 0){
+            
+            if((k_y - 1)>=0){
+                b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
+                
+            }
+            if(k_y + 1 < 8){
+                b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
+                  
+            }
+            b3 = isKingSafeB(k_x, k_y, k_x - 1, k_y);
+            
+        }
+
+        if( (k_x + 1 < 8) ){
+            
+            if((k_y - 1)>= 0){
+                b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
+                
+            }
+            if(k_y + 1 < 8){
+                b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
+                   
+            }
+            b6 = isKingSafeB(k_x, k_y, k_x + 1, k_y);
+           
+
+        }
+
+        if(k_y - 1 >= 0){//k_x
+            b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
+            
+        }
+        if(k_y + 1 < 8){
+           b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
+            std::cout << "b8 : " << b8 << '\n';
+        }
+
+        // i think this is probably the worst thing i have ever coded, lord please forgive me
+
+        if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
+            king_checkmate = true;
+            std::cout << "Checkmate: white wins" << '\n';
+        }
+
+    }
+
+
+    return king_checkmate;
+}
+
+bool Board::isKingSafeB(int oldX, int oldY,int newX, int newY){
+    bool safe{true};
+
+    Board board_copy;
+    board_copy = *this;
+    board_copy.setNull(oldX,oldY);    
+
+    char attack_colour{' '};
+    for(int i{}; i < 8; ++i){
+        for(int j{}; j < 8; ++j){
+            if(getSquare(i, j) != nullptr){
+                if(getColourB(oldX,oldY) != getColourB(i, j)){ // this assumes square is empty
+                    attack_colour = getColourB(i, j);
+                    if(getSquare(i,j)->getSymbol()!= 'K' && getSquare(i,j)->getSymbol()!='k'){
+                    if(getSquare(i, j)->isValidMove(i, j, newX, newY, board_copy, attack_colour)){
+                        safe = false;
+                        
+                    }
+                    if(getSquare(newX, newY) != nullptr){//if square is not empty.
+                            board_copy.setNull(newX,newY);
+                        if(getSquare(i, j)->isValidMove(i, j, newX, newY, board_copy, attack_colour)){
+                            safe =  false;
+                        
+                        }
+                    }
+                    }
+                }
+            }
+            
+        }
+    }
+    return safe;
+
+}
+
+bool Board::isStalemate(char colour, int k_x, int k_y){
+    
+    bool king_check = isCheck(colour,k_x, k_y);
+    bool stale_mate{false};
+    bool b1{false};
+    bool b2{false};
+    bool b3{false};
+    bool b4{false};
+    bool b5{false};
+    bool b6{false};
+    bool b7{false};
+    bool b8{false};
+
+    if(king_check == false){
+        if(k_x - 1 >= 0){
+            
+            if((k_y - 1)>=0){
+                b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
+                
+            }
+            if(k_y + 1 < 8){
+                b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
+                  
+            }
+            b3 = isKingSafeB(k_x, k_y, k_x - 1, k_y);
+            
+        }
+
+        if( (k_x + 1 < 8) ){
+            
+            if((k_y - 1)>= 0){
+                b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
+                
+            }
+            if(k_y + 1 < 8){
+                b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
+                   
+            }
+            b6 = isKingSafeB(k_x, k_y, k_x + 1, k_y);
+           
+
+        }
+
+        if(k_y - 1 >= 0){//k_x
+            b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
+            
+        }
+        if(k_y + 1 < 8){
+           b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
+        }
+         if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
+            stale_mate = true;
+            std::cout << "Stalemate: draw " << '\n';
+        }
+
+    }
+    return stale_mate;
+}
 
 
 

@@ -14,6 +14,7 @@ bool Rook::isValidMove(int oldX, int oldY, int newX, int newY,Board& board, char
             for(int j{oldY+1}; j <= newY ; ++j){
                 //oldY+1: doesnt start at the piece itself;
                 //<= newY: to go a specific point and not end before the point
+
                 if(board.getSquare(oldX,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
                     if(j==newY){// capture logic
@@ -87,5 +88,6 @@ bool Rook::isValidMove(int oldX, int oldY, int newX, int newY,Board& board, char
 
         }
     }
+
     return valid;
 }

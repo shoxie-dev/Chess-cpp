@@ -7,7 +7,7 @@ Bishop::Bishop(int x_param, int y_param,char colour_param) : Piece(x_param,y_par
 
 bool Bishop::isValidMove(int oldX, int oldY, int newX, int newY, Board& board,char colour_param){
     bool valid = false;
-    int odC = oldX - oldY;
+    int odC = oldY - oldX;
     int dC = oldX + oldY;   //y = mx + c
     //std::cout << "newX + odC : " << newX + odC << '\n';
     //std::cout << "-newX + dC : "  << -newX + dC << '\n';

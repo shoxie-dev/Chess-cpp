@@ -12,7 +12,9 @@ class Board{
         void movePiece(int startX, int startY, int endX, int endY);
         void pawnPromotion(char colour);
         bool isCheck(char colour, int& k_x, int& k_y);
-        bool isCheckmate(char colour) const;
+        bool isCheckmate(char colour);
+        bool isStalemate(char colour, int k_x, int k_y);
+        bool isKingSafeB(int oldX, int oldY,int newX, int newY);
         bool castle_onceW = true;
         bool castle_onceB = true;
 

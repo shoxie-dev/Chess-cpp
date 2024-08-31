@@ -10,6 +10,7 @@ bool King::isKingSafe(int oldX, int oldY,int newX, int newY, Board& board){
 
     Board board_copy;
     board_copy = board;
+    board_copy.setNull(oldX,oldY);
 
     char attack_colour{' '};
     for(int i{}; i < 8; ++i){
@@ -17,49 +18,48 @@ bool King::isKingSafe(int oldX, int oldY,int newX, int newY, Board& board){
             if(board.getSquare(i, j) != nullptr){
                 if(board.getColourB(oldX,oldY) != board.getColourB(i, j)){ // this assumes square is empty
                     attack_colour = board.getColourB(i, j);
-                    if(board.getSquare(i, j)->isValidMove(i, j, newX, newY, board, attack_colour)){
+                    if(board.getSquare(i,j)->getSymbol()!= 'K' && board.getSquare(i,j)->getSymbol()!='k'){
+                        //std::cout << "Symbol "  << board.getSquare(i,j)-> getSymbol() << " @ : (" << i << ", " << j << ")\n" ; 
+                    if(board.getSquare(i, j)->isValidMove(i, j, newX, newY, board_copy, attack_colour)){
                         safe = false;
-                        break;
+                        
                     }
                     if(board.getSquare(newX, newY) != nullptr){//if square is not empty.
-                        board_copy.setNull(newX,newY);
+                            board_copy.setNull(newX,newY);
                         if(board.getSquare(i, j)->isValidMove(i, j, newX, newY, board_copy, attack_colour)){
                             safe =  false;
-                            break;
+                        
                         }
+                    }
                     }
                 }
             }
-        }
-        if(safe == false){// to break out of outer loop
-            break;
+            
         }
     }
-
-    
     return safe;
 }
 
 bool King::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param){//colour_param = currentPlayer colour
     bool valid = false;
     if((newX == oldX - 1) && (newY == oldY)||(newX == oldX) && (newY == oldY + 1)||(newX == oldX + 1) && (newY == oldY)||(newX == oldX) && (newY == oldY - 1)){
-        if(board.getSquare(newX,newY)!=nullptr && isKingSafe(oldX, oldY, newX, newY, board)){// checks desitination point and needs a different functio
+        if(isKingSafe(oldX, oldY, newX, newY, board) && board.getSquare(newX,newY)!=nullptr ){// checks desitination point and needs a different functio
             valid = false;
-            if((board.getColourB(oldX,oldY) != board.getColourB(newX,newY)) && isKingSafe(oldX, oldY, newX, newY, board)){// capture logic also needs &&isKingSafe(newX,newY)
+            if(isKingSafe(oldX, oldY, newX, newY, board) && (board.getColourB(oldX,oldY) != board.getColourB(newX,newY)) ){// capture logic also needs &&isKingSafe(newX,newY)
                 valid = true;
             }
-        }else if(board.getSquare(newX,newY) == nullptr  && isKingSafe(oldX, oldY, newX, newY, board)){// &&isKingSafe(newX,newY)
+        }else if( isKingSafe(oldX, oldY, newX, newY, board) && board.getSquare(newX,newY) == nullptr  ){// &&isKingSafe(newX,newY)
             valid = true;
         }    
     }  
 
     if(((newX == oldX - 1) && (newY == oldY - 1) )||( (newX == oldX + 1) && (newY == oldY + 1) )||( (newX == oldX + 1) && (newY == oldY - 1) )||( (newX == oldX - 1) && (newY == oldY + 1) )){
-        if(board.getSquare(newX,newY)!=nullptr && isKingSafe(oldX, oldY, newX, newY, board)){// checks desitination point
+        if( isKingSafe(oldX, oldY, newX, newY, board) && board.getSquare(newX,newY)!=nullptr){// checks desitination point
             valid = false;
-            if((board.getColourB(oldX,oldY) != board.getColourB(newX,newY)) && isKingSafe(oldX, oldY, newX, newY, board)){// capture logic
+            if(isKingSafe(oldX, oldY, newX, newY, board) && (board.getColourB(oldX,oldY) != board.getColourB(newX,newY)) ){// capture logic
                 valid = true;
             }
-        }else if(board.getSquare(newX,newY) == nullptr && isKingSafe(oldX, oldY, newX, newY, board)){
+        }else if(isKingSafe(oldX, oldY, newX, newY, board) && board.getSquare(newX,newY) == nullptr ){
             valid = true;
         }    
     }
