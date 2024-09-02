@@ -3,13 +3,24 @@
 Game::Game(std::string name1, std::string name2){
     
     player1.setName(name1); 
-    player1.setColor('W');
+    player1.setColour('W');
 
     player2.setName(name2);
-    player2.setColor('B');
+    player2.setColour('B');
 
     currentPlayer = &player1;
 
+}
+
+Game::~Game(){ // deletes remaining pieces on board that is dynamically allocated 
+    std::cout << "Game destructor called " << '\n';
+    for(int i{}; i < 8; ++i){
+        for(int j{}; j < 8; ++j){
+            if(board.getSquare(i,j) != nullptr){
+                delete board.getSquare(i, j);
+            }
+        }
+    }
 }
 
 void Game::switchTurn(){
@@ -31,8 +42,8 @@ void Game::start(){
     char ans{'s'};
     bool stale_mate = false;
 
-    board.printBoard();
     while(king_checkmate != true && stale_mate != true){
+        board.printBoard();
         if(currentPlayer){      
             if(king_check == false){
                 while(final_piece == false){
@@ -53,60 +64,56 @@ void Game::start(){
                 std::cout << "( " <<  king_x_check << ", " << king_y_check << ")" <<'\n';
             }
             
-            if(board.getSquare(pieceXY.first,pieceXY.second)!= nullptr && board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColor()){// btw if you pick nullptr it breaks so maybe
+            if(board.getSquare(pieceXY.first,pieceXY.second)!= nullptr && board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColour()){// btw if you pick nullptr it breaks so maybe
                 std::cout << "Valid piece selected." << '\n';
             }else{ 
                 bool valid_piece = false;
                 while(valid_piece == false){
                     std::cout << "Invalid piece selected, select again." << '\n';
                     pieceXY = board.inputCoords();
-                    valid_piece = (board.getSquare(pieceXY.first,pieceXY.second)!= nullptr) && (board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColor());
+                    valid_piece = (board.getSquare(pieceXY.first,pieceXY.second)!= nullptr) && (board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColour());
                 }
                 std::cout << "Valid piece selected." << '\n';
             }
             std::cout << "Make move: " << '\n';
             posXY = board.inputCoords();
-            bool valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
+            bool valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColour());
                 if(valid_move == true){
                     board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
-                    board.printBoard();
-                    king_check = board.isCheck(currentPlayer->getColor(), king_x_check, king_y_check);
-                    stale_mate = board.isStalemate(currentPlayer->getColor(),king_x_check,king_y_check);
+                    king_check = board.isCheck(currentPlayer->getColour(), king_x_check, king_y_check);
+                    stale_mate = board.isStalemate(currentPlayer->getColour(),king_x_check,king_y_check);
                     if(stale_mate == true){
                         break;
                     }
-                    king_checkmate = board.isCheckmate(currentPlayer->getColor());
+                    king_checkmate = board.isCheckmate(currentPlayer->getColour());
                     if(king_checkmate == true){
-                        std::cout << "Player " << currentPlayer->getColor() << " wins" <<'\n';
+                        std::cout << "Player " << currentPlayer->getColour() << " wins" <<'\n';
                         break;
                     }
 
-                    board.pawnPromotion(currentPlayer->getColor());
+                    board.pawnPromotion(currentPlayer->getColour());
                 }else{
                     bool valid_move = false;
                     while(valid_move == false){
                         std::cout << "Invalid move, select again.  " << '\n';
                         posXY = board.inputCoords();
-                        valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColor());
+                        valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColour());
                     }
                     std::cout << "Valid move made." << '\n';
                     board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
-                    board.printBoard();
-                    king_check = board.isCheck(currentPlayer->getColor(), king_x_check, king_y_check);
-                    stale_mate = board.isStalemate(currentPlayer->getColor(),king_x_check,king_y_check);
+                    king_check = board.isCheck(currentPlayer->getColour(), king_x_check, king_y_check);
+                    stale_mate = board.isStalemate(currentPlayer->getColour(),king_x_check,king_y_check);
                     if(stale_mate == true){
                         break;
                     }
-                    king_checkmate = board.isCheckmate(currentPlayer->getColor());
+                    king_checkmate = board.isCheckmate(currentPlayer->getColour());
                     if(king_checkmate == true){
-                        std::cout << "Player " << currentPlayer->getColor() << " wins" <<'\n';
+                        std::cout << "Player " << currentPlayer->getColour() << " wins" <<'\n';
                         break;
                     }
-                    board.pawnPromotion(currentPlayer->getColor());
+                    board.pawnPromotion(currentPlayer->getColour());
                 }
         }
-
-        
         switchTurn();
         pieceXY.first = 0;
         pieceXY.second = 0;
@@ -117,8 +124,4 @@ void Game::start(){
 
     }
     board.printBoard();
-}
-
-bool Game::isGameOver() const{
-    return false;
 }

@@ -15,38 +15,39 @@ Board::Board(){//x y (is default positions)
 
     // *** WHITE PIECES ***
 
-    squares[7][4] = new King(7,4,white); // 7 4
-    
-   squares[7][3] = new Queen(7,3,white); //7 3
-    squares[7][0] = new Rook(7,0,white); // 7 0
-    squares[7][7] = new Rook(7,7,white); // 7 7
-    squares[7][2] = new Bishop(7,2,white); // 7 2
-    squares[7][5] = new Bishop(7,5,white); // 7 5
-    squares[7][1] = new Knight(7,1,white); // 7 1
-    squares[7][6] = new Knight(7,6,white); // 7 6
-   
+    initPiece(7, 4, new King(white)); // 7 4
+  
+    initPiece(7, 3, new Queen(white));// 7 3
 
+    initPiece(7, 0, new Rook(white));// 7 0
+    initPiece(7, 7, new Rook(white));// 7 7
+    initPiece(7, 2, new Bishop(white));// 7 2
+    initPiece(7, 5, new Bishop(white));// 7 5
+    initPiece(7, 1, new Knight(white));// 7 1
+    initPiece(7, 6, new Knight(white));// 7 6
+
+  
     for(int j{}; j < dim; ++j){
-        squares[6][j] = new Pawn(6,j,white);
+        initPiece(6 , j, new Pawn(white)); // 6, 0 <= j < 8 default
     }
 
 
 
     // *** BLACK PIECES ***
 
-    squares[0][4] = new King(0,4,black); //0 4
+    initPiece(0, 4, new King(black)); // 0 4
 
-    squares[0][3] = new Queen(0,3,black); // 0 3
-    squares[0][0] = new Rook(0,0,black); // 0 0
-    squares[0][7] = new Rook(0,7,black); // 0 7
-   squares[0][5] = new Bishop(0,5,black); // 0 5
-    squares[0][2] = new Bishop(0,2,black); // 0 2
-    squares[0][1] = new Knight(0,1,black); // 0 1
-    squares[0][6] = new Knight(0,6,black); // 0 6
+    initPiece(0, 3, new Queen(black));// 0 3
+    initPiece(0, 0, new Rook(black));// 0 0
+    initPiece(0, 7, new Rook(black));// 0 7
+    initPiece(0, 2, new Bishop(black));// 0 2
+    initPiece(0, 5, new Bishop(black));// 0 5
+    initPiece(0, 1, new Knight(black));// 0 1
+    initPiece(0, 6, new Knight(black));// 0 6
 
 
     for(int j{}; j < dim; ++j){
-        squares[1][j] = new Pawn(1,j,black);
+        initPiece(1 , j, new Pawn(black));//1, 0 <= j < 8 is default
     }
 
 }
@@ -55,8 +56,7 @@ Board::Board(){//x y (is default positions)
 void Board::printBoard(){
     for(int i{}; i < dim; ++i){
         for(int j{}; j < dim; ++j){
-            if(squares[i][j] == nullptr){
-                
+            if(getSquare(i, j) == nullptr){
                 std::cout << std::setw(2) << '.';
             }
             else {
@@ -67,58 +67,72 @@ void Board::printBoard(){
     }
 }
 
-void Board::movePiece(int startX, int startY, int endX, int endY){
-    if(getSquare(endX,endY)!=nullptr){
-        if(getSquare(startX,startY)->getSymbol() != getSquare(endX,endY)->getSymbol() ){// code for when a piece is getting taken
-            setTaken(endX,endY);
-        }
+void Board::movePiece(int x_i, int y_i, int x_f, int y_f){
+    if(getSquare(x_f,y_f)!=nullptr){ // code for when piece is getting taken
+        setTaken(x_f,y_f);
     }
 
-    if(getSquare(startX,startY)->capture_enPassant == true){// code for en passant capture
-        std::cout << "inside enPassant movePiece code" << '\n';
-        if(getSquare(startX,startY)->getColour() == 'W'){
-            setTaken(endX+1,endY);
-        }
-        std::cout << "fuck you: " << getSquare(startX,startY)-> getColour() << '\n';
-        if(getSquare(startX,startY)->getColour() == 'B'){
-            std::cout << "inside enPassant movePiece black" << '\n';
-            setTaken(endX-1,endY);    
-        }
+    takeEnPassant(x_i, y_i, x_f, y_f);
+    castleRook(x_i, y_i, x_f, y_f);
+    
+    setSquare(x_f, y_f, x_i, y_i);
+
+    if(getSquare(x_i, y_i)->getisMoved() == false){// setting if a piece has been moved
+        getSquare(x_f, y_f)->setMoved();
     }
 
-    if(getSquare(startX, startY)->getCastled() == true && getCastle_onceW() == true){//using squares directly is bad use setters and getters
+    setNull(x_i, y_i);
+}
+
+void Board::castleRook(int x_i, int y_i, int x_f, int y_f){
+    if(getSquare(x_i, y_i)->getCastled() == true && getCastle_onceW() == true){//code to move Rook if castling takes place.
         setCastle_onceW();
-        if(startY > endY){
-            squares[endX][startY-1] = squares[endX][0];
-            squares[endX][0] = nullptr;
-        }else if(startY < endY){
-            squares[endX][startY+1] = squares[endX][7];
-            squares[endX][7] = nullptr;
+        if(y_i > y_f){
+            setSquare(x_f, y_i-1, x_f, 0);
+            setNull(x_f, 0);
+        }else if(y_i < y_f){
+            setSquare(x_f, y_i+1, x_f, 7);
+            setNull(x_f, 7);
         }
-    } else if(getSquare(startX, startY)->getCastled() == true && getCastle_onceB() == true){
+    } else if(getSquare(x_i, y_i)->getCastled() == true && getCastle_onceB() == true){
         setCastle_onceB();
-        if(startY > endY){
-            squares[endX][startY-1] = squares[endX][0];
-            squares[endX][0] = nullptr;
-        }else if(startY < endY){
-            squares[endX][startY+1] = squares[endX][7];
-            squares[endX][7] = nullptr;
+        if(y_i > y_f){
+            setSquare(x_f, y_i-1, x_f, 0);
+            setNull(x_f, 0);
+        }else if(y_i < y_f){
+            setSquare(x_f, y_i+1, x_f, 7);
+            setNull(x_f, 7);
         }
     }
 
+}
 
-    squares[endX][endY] = squares[startX][startY];
-
-    if(squares[startX][startY]->getisMoved() == false){
-        squares[endX][endY]->setMoved();
+void Board::takeEnPassant(int x_i, int y_i, int x_f, int y_f){
+    if(getSquare(x_i,y_i+1) != nullptr){
+        if(getSquare(x_i,y_i+1)->getenPassant() == true){// code for en passant capture
+            std::cout << "inside enPassant movePiece code" << '\n';
+            if(getColourB(x_i,y_i) == 'W'){
+                setTaken(x_f+1,y_f);
+            }
+            if(getColourB(x_i,y_i) == 'B'){
+                std::cout << "inside enPassant movePiece black" << '\n';
+                setTaken(x_f-1,y_f);    
+            }
+        }
     }
-
-
-    squares[startX][startY] = nullptr; 
-  
-    squares[endX][endY]->setPosition(endX,endY);//useless get rid of it
-
-
+    
+    if(getSquare(x_i, y_i-1) != nullptr){
+        if(getSquare(x_i,y_i-1)->getenPassant() == true){// code for en passant capture
+            std::cout << "inside enPassant movePiece code" << '\n';
+            if(getColourB(x_i,y_i) == 'W'){
+                setTaken(x_f+1,y_f);
+            }
+            if(getColourB(x_i,y_i) == 'B'){
+                std::cout << "inside enPassant movePiece black" << '\n';
+                setTaken(x_f-1,y_f);    
+            }
+        }
+    }
 }
 
 void Board::pawnPromotion(char colour){
@@ -138,19 +152,19 @@ void Board::pawnPromotion(char colour){
                     std::cin >> choice;
                     if(choice == 1){
                         setTaken(7,found);
-                        squares[7][found] = new Queen(7,found,'B');
+                        initPiece( 7, found, new Queen('B'));
                         break;
                     }else if(choice == 2){
                         setTaken(7,found);
-                        squares[7][found] = new Knight(7,found,'B');
+                        initPiece( 7, found, new Knight('B'));
                         break;
                     }else if(choice == 3){
                         setTaken(7,found);
-                        squares[7][found] = new Bishop(7,found,'B');
+                        initPiece( 7, found, new Bishop('B'));
                         break;
                     }else if(choice == 4){
                         setTaken(7,found);
-                        squares[7][found] = new Rook(7,found,'B');
+                        initPiece( 7, found, new Rook('B'));
                         break;
                     }else{
                         std::cout << "invalid piece selected, try again: " << '\n';
@@ -178,19 +192,19 @@ void Board::pawnPromotion(char colour){
                     std::cin >> choice;
                     if(choice == 1){
                         setTaken(0,found);
-                        squares[0][found] = new Queen(0,found,'W');
+                        initPiece(0, found, new Queen('W'));
                         break;
                     }else if(choice == 2){
                         setTaken(0,found);
-                        squares[0][found] = new Knight(0,found,'W');
+                        initPiece(0, found, new Knight('W'));
                         break;
                     }else if(choice == 3){
                         setTaken(0,found);
-                        squares[0][found] = new Bishop(0,found,'W');
+                        initPiece(0, found, new Bishop('W'));
                         break;
                     }else if(choice == 4){
                         setTaken(0,found);
-                        squares[0][found] = new Rook(0,found,'W');
+                        initPiece(0, found, new Rook('W'));
                         break;
                     }else{
                         std::cout << "invalid piece selected, try again: " << '\n';
@@ -206,8 +220,7 @@ void Board::pawnPromotion(char colour){
 bool Board::isCheck(char colour,int& k_x, int& k_y){//player colour and coordinates of  king piece
     bool king_check{false};
     
-    if(colour == 'B'){
-        std::cout << "inside W check" << '\n'; 
+    if(colour == 'B'){// if colour b made a move check if White is in check after that move
         bool found{false};
         for(int i{}; i < 8; ++i){ // code to find king on board
             for(int j{}; j < 8; ++j){
@@ -244,7 +257,7 @@ bool Board::isCheck(char colour,int& k_x, int& k_y){//player colour and coordina
             
         }
 
-    }else if(colour == 'W'){
+    }else if(colour == 'W'){// if white made a move check if Black king is in check
         bool found{false};
         for(int i{}; i < 8; ++i){ // code to find king on board
             for(int j{}; j < 8; ++j){
@@ -351,7 +364,6 @@ bool Board::isCheckmate(char colour){//attacking colour
         }
         if(k_y + 1 < 8){
            b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
-            std::cout << "b8 : " << b8 << '\n';
         }
 
         // i think this is probably the worst thing i have ever coded, lord please forgive me
@@ -422,10 +434,8 @@ bool Board::isCheckmate(char colour){//attacking colour
         }
         if(k_y + 1 < 8){
            b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
-            std::cout << "b8 : " << b8 << '\n';
         }
 
-        // i think this is probably the worst thing i have ever coded, lord please forgive me
 
         if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
             king_checkmate = true;
@@ -437,31 +447,31 @@ bool Board::isCheckmate(char colour){//attacking colour
     return king_checkmate;
 }
 
-bool Board::isKingSafeB(int oldX, int oldY,int newX, int newY){
+bool Board::isKingSafeB(int x_i, int y_i,int x_f, int y_f){
     bool safe{true};
 
     Board board_copy;
     board_copy = *this;
-    board_copy.setNull(oldX,oldY);    
+    board_copy.setNull(x_i,y_i);    
 
     char attack_colour{' '};
     for(int i{}; i < 8; ++i){
         for(int j{}; j < 8; ++j){
             if(getSquare(i, j) != nullptr){
-                if(getColourB(oldX,oldY) != getColourB(i, j)){ // this assumes square is empty
+                if(getColourB(x_i,y_i) != getColourB(i, j)){ // this assumes square is empty
                     attack_colour = getColourB(i, j);
                     if(getSquare(i,j)->getSymbol()!= 'K' && getSquare(i,j)->getSymbol()!='k'){
-                    if(getSquare(i, j)->isValidMove(i, j, newX, newY, board_copy, attack_colour)){
-                        safe = false;
-                        
-                    }
-                    if(getSquare(newX, newY) != nullptr){//if square is not empty.
-                            board_copy.setNull(newX,newY);
-                        if(getSquare(i, j)->isValidMove(i, j, newX, newY, board_copy, attack_colour)){
-                            safe =  false;
-                        
+                        if(getSquare(i, j)->isValidMove(i, j, x_f, y_f, board_copy, attack_colour)){
+                            safe = false;
+                            
                         }
-                    }
+                        if(getSquare(x_f, y_f) != nullptr){//if square is not empty.
+                                board_copy.setNull(x_f,y_f);
+                            if(getSquare(i, j)->isValidMove(i, j, x_f, y_f, board_copy, attack_colour)){
+                                safe =  false;
+                            
+                            }
+                        }
                     }
                 }
             }

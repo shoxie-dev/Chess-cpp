@@ -6,14 +6,15 @@
 #include <iomanip>
 
 class Knight : public Piece{
-    public:
+    private:
         char symbol_param;
-        Knight(int x_param, int y_param, char colour_param);
-        ~Knight() = default; //checkout later idk
+    public:
+        Knight(char colour_param);
+        ~Knight() = default; 
         virtual void display() override{
             std::cout << std::setw(2) << symbol_param;
         }
-        virtual bool isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param) override;
+        virtual bool isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char colour_param) override;
     
 };
 

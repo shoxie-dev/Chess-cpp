@@ -4,19 +4,22 @@
 #include "Piece.h"
 
 class Board{
-    public:
+    private:
         Piece* squares[8][8]{nullptr};
+        bool castle_onceW = true;
+        bool castle_onceB = true;
 
+    public:
         Board();
         void printBoard();
-        void movePiece(int startX, int startY, int endX, int endY);
+        void movePiece(int x_i, int y_i, int x_f, int y_f);
         void pawnPromotion(char colour);
         bool isCheck(char colour, int& k_x, int& k_y);
         bool isCheckmate(char colour);
         bool isStalemate(char colour, int k_x, int k_y);
-        bool isKingSafeB(int oldX, int oldY,int newX, int newY);
-        bool castle_onceW = true;
-        bool castle_onceB = true;
+        bool isKingSafeB(int x_i, int y_i, int x_f, int y_f);
+        void castleRook(int x_i, int y_i, int x_f, int y_f);
+        void takeEnPassant(int x_i, int y_i, int x_f, int y_f);
 
 
         std::pair <int,int> inputCoords() const{
@@ -26,15 +29,19 @@ class Board{
             return XY;
         }
         
-        char getSymbolB(int x,int y){// B is board
+        char getSymbolB(int x,int y){
             return squares[x][y]->getSymbol();
         }
         char getColourB(int x,int y){
             return squares[x][y]->getColour();
         }
-        
-        void setSquare(Piece* piece, int x, int y){
-            squares[x][y] = piece;
+
+        void setSquare(int x_f,int y_f,int x_i,int y_i){
+            squares[x_f][y_f] = squares[x_i][y_i];
+        }
+
+        void initPiece( int x, int y, Piece* init_piece){
+            squares[x][y] = init_piece;
         }
 
         Piece* getSquare(int x, int y){

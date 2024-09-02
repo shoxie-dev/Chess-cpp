@@ -7,16 +7,15 @@
 
 
 class Pawn : public Piece{
-    public:
+    private:
         char symbol_param;
-        Pawn(int x_param, int y_param,char colour_param);
-        ~Pawn() = default; //checkout later idk
+    public:
+        Pawn(char colour_param);
+        ~Pawn() = default; 
         virtual void display() override{
             std::cout << std::setw(2) << symbol_param;
         }
-        virtual bool isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param)override;
-        virtual bool isKingSafe(int newX,int newY, Board& board,char colour_param){return false;}
-    
+        virtual bool isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char colour_param)override;    
 };
 
 #endif

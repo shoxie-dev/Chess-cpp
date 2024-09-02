@@ -2,7 +2,11 @@
 #define _PLAYER_
 #include <string>
 class Player{
+    private:
+        std::string name;
+        char colour;
     public:
+        
         Player() = default;
         //Player(std::string name_param, char color_param);
 
@@ -10,23 +14,17 @@ class Player{
             return name;
         }
 
-        char getColor() const{
-            return color;
+        char getColour() const{
+            return colour;
         }
 
         void setName(std::string name_param){
             name = name_param;
         }
 
-        void setColor(char color_param){
-            color = color_param;
+        void setColour(char colour_param){
+            colour = colour_param;
         }
-
-
-
-    private:
-        std::string name;
-        char color;
 
 };
 

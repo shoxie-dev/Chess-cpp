@@ -6,14 +6,15 @@
 #include <iomanip>
 
 class Bishop : public Piece{
-    public:
+    private:
         char symbol_param;
-        Bishop(int x_param, int y_param,char colour_param);
-        ~Bishop() = default; //checkout later idk
+    public:
+        Bishop(char colour_param);
+        ~Bishop() = default; 
         virtual void display() override{
             std::cout << std::setw(2) << symbol_param;
         }
-        virtual bool isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param) override;
+        virtual bool isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char colour_param) override;
     
 };
 

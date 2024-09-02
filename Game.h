@@ -3,15 +3,16 @@
 #include "Player.h"
 #include "Board.h"
 class Game{
-    public:
+    private:
         Player player1, player2;
         Board board;
         Player* currentPlayer;
+    public:
 
         Game(std::string name1, std::string name2);
+        ~Game();
         void switchTurn();
         void start();
-        bool isGameOver() const;
 
 };
 

@@ -1,25 +1,24 @@
 #include "Queen.h"
 #include "Board.h"
 
-Queen::Queen(int x_param, int y_param,char colour_param) : Piece(x_param, y_param,(colour_param == 'W')? symbol_param = 'Q' : symbol_param = 'q', colour_param){
+Queen::Queen(char colour_param) : Piece((colour_param == 'W')? symbol_param = 'Q' : symbol_param = 'q', colour_param){
     
 }
 
-bool Queen::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param){
+bool Queen::isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char colour_param){
     bool valid = false;
-    int dC = oldX + oldY;   //y = mx + c
-    int odC = oldY - oldX;
-    if(newY == newX + odC){//bishop code
-        //std::cout << "inside newY == newX + odC" << '\n';
-        int n = newY - oldY; //if positive on the rhs of the piece,lhs otherwise
+    int dC = x_i + y_i;   //y = mx + c
+    int odC = y_i - x_i;
+    if(y_f == x_f + odC){//bishop code
+        int n = y_f - y_i; //if positive on the rhs of the piece,lhs otherwise
         if(n > 0){
             int j{};
-            for(int i{oldX + 1};i <= newX;++i){
+            for(int i{x_i + 1};i <= x_f;++i){
                 j = i + odC;
                 if(board.getSquare(i,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
-                    if(j == newY){// capture logic
-                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                    if(j == y_f){// capture logic
+                        if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){
                             valid = true;
                         }
                     }
@@ -32,13 +31,13 @@ bool Queen::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, ch
         }
         if(n < 0){
             int j{};
-            for(int i{oldX - 1};i >= newX; --i){
+            for(int i{x_i - 1};i >= x_f; --i){
                 j = i + odC;
                 
                 if(board.getSquare(i,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
-                    if(j == newY){// capture logic
-                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                    if(j == y_f){// capture logic
+                        if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){
                             valid = true;
                         }
                     }
@@ -51,19 +50,16 @@ bool Queen::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, ch
         }
     }
 
-    if(newY == -newX + dC){
-        //std::cout << "inside newY == -newX + dC" << std::endl;
-        int n = newY - oldY;
+    if(y_f == -x_f + dC){
+        int n = y_f - y_i;
         if(n > 0){//rhs of the piece
-            std::cout << "n > 0" << '\n';
             int j{};
-            for(int i{oldX - 1};i >= newX; --i){
+            for(int i{x_i - 1};i >= x_f; --i){
                 j = -i + dC;
-                std::cout << "j : " << j << '\n';
                 if(board.getSquare(i,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
-                    if(j == newY){// capture logic
-                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                    if(j == y_f){// capture logic
+                        if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){
                             valid = true;
                         }
                     }
@@ -77,15 +73,13 @@ bool Queen::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, ch
             
         }
         if(n < 0){//lhs of the piece
-            std::cout << "n < 0" << '\n';
             int j{};
-            for(int i{oldX + 1};i <= newX;++i){
+            for(int i{x_i + 1};i <= x_f;++i){
                 j = -i + dC;
-                std::cout << "j : " << j << '\n';
                 if(board.getSquare(i,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
-                    if(j == newY){// capture logic
-                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                    if(j == y_f){// capture logic
+                        if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){
                             valid = true;
                         }
                     }
@@ -100,22 +94,21 @@ bool Queen::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, ch
 
     }
 
-    if(newX == oldX){//rook code
-        int n = newY - oldY;
+    if(x_f == x_i){//rook code
+        int n = y_f - y_i;
         if(n > 0){ // this is for rhs of rook
-            std::cout << "inside newX == oldX if block" << std::endl;
-            for(int j{oldY+1}; j <= newY ; ++j){
-                //oldY+1: doesnt start at the piece itself;
-                //<= newY: to go a specific point and not end before the point
-                if(board.getSquare(oldX,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
+            for(int j{y_i+1}; j <= y_f ; ++j){
+                //y_i+1: doesnt start at the piece itself;
+                //<= y_f: to go a specific point and not end before the point
+                if(board.getSquare(x_i,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
-                    if(j==newY){// capture logic
-                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                    if(j==y_f){// capture logic
+                        if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){
                             valid = true;
                         }
                     }
                     break;
-                }else if(board.getSquare(oldX,j) == nullptr){
+                }else if(board.getSquare(x_i,j) == nullptr){
                     valid = true;
                 }
             }
@@ -123,19 +116,18 @@ bool Queen::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, ch
         }
         
         if(n < 0){
-            //std::cout << "inside n < 0 if block" << std::endl;
-            for(int j{oldY-1}; j >= newY ; --j){
-                //oldY-1: doesnt start at the piece itself;
-                //>= newY: to go a specific point and not end before the point
-                if(board.getSquare(oldX,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
+            for(int j{y_i-1}; j >= y_f ; --j){
+                //y_i-1: doesnt start at the piece itself;
+                //>= y_f: to go a specific point and not end before the point
+                if(board.getSquare(x_i,j)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
-                    if(j==newY){// capture logic
-                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                    if(j==y_f){// capture logic
+                        if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){
                             valid = true;
                         }
                     }
                     break;
-                }else if(board.getSquare(oldX,j) == nullptr){
+                }else if(board.getSquare(x_i,j) == nullptr){
                     valid = true;
                 }
             }
@@ -144,36 +136,35 @@ bool Queen::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, ch
         
     }
 
-    if(newY == oldY){
-        int n = newX - oldX;
-        std::cout << "inside newY == oldY block" << std::endl;
+    if(y_f == y_i){
+        int n = x_f - x_i;
         if(n > 0){ 
-            for(int i{oldX + 1}; i <= newX; ++i){
-                if(board.getSquare(i,oldY)!=nullptr){// checks gap between two points excluding the beginning and ending points
+            for(int i{x_i + 1}; i <= x_f; ++i){
+                if(board.getSquare(i,y_i)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
-                    if(i==newX){// capture logic
-                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                    if(i==x_f){// capture logic
+                        if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){
                             valid = true;
                         }
                     }
                     break;
-                }else if(board.getSquare(i,oldY) == nullptr){
+                }else if(board.getSquare(i,y_i) == nullptr){
                     valid = true;
                 }
             }
 
         }
         if(n < 0){
-            for(int i{oldX-1}; i >= newX ; --i){
-                if(board.getSquare(i,oldY)!=nullptr){// checks gap between two points excluding the beginning and ending points
+            for(int i{x_i-1}; i >= x_f ; --i){
+                if(board.getSquare(i,y_i)!=nullptr){// checks gap between two points excluding the beginning and ending points
                     valid = false;
-                    if(i == newX){// capture logic
-                        if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+                    if(i == x_f){// capture logic
+                        if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){
                             valid = true;
                         }
                     }
                     break;
-                }else if(board.getSquare(i,oldY) == nullptr){
+                }else if(board.getSquare(i,y_i) == nullptr){
                     valid = true;
                 }
             }

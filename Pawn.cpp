@@ -1,29 +1,29 @@
 #include "Pawn.h"
 #include "Board.h"
 
-Pawn::Pawn(int x_param, int y_param,char colour_param) : Piece(x_param, y_param,(colour_param == 'W')? symbol_param = 'P' : symbol_param = 'p', colour_param){
+Pawn::Pawn(char colour_param) : Piece((colour_param == 'W')? symbol_param = 'P' : symbol_param = 'p', colour_param){
    
 }
 
-bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, char colour_param){
+bool Pawn::isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char colour_param){
     bool valid = false;
     if(colour_param == 'B'){
-        if(board.getSquare(oldX,oldY)->getisMoved() == false){// strictly movement
-            if((newX == oldX + 1 && newY == oldY) || (newX == oldX + 2 && newY == oldY)){
-                if(board.getSquare(newX,newY)!=nullptr){// checks desitination point
+        if(board.getSquare(x_i,y_i)->getisMoved() == false){// strictly movement
+            if((x_f == x_i + 1 && y_f == y_i) || (x_f == x_i + 2 && y_f == y_i)){
+                if(board.getSquare(x_f,y_f)!=nullptr){// checks desitination point
                     valid = false;
-                }else if(board.getSquare(newX,newY) == nullptr){
+                }else if(board.getSquare(x_f,y_f) == nullptr){
                     valid = true;
-                    if(newX == oldX + 2 && newY == oldY){
+                    if(x_f == x_i + 2 && y_f == y_i){
                         std::cout << "En passant active" << '\n';
-                        board.getSquare(oldX,oldY)->setenPassant(true);
+                        board.getSquare(x_i,y_i)->setenPassant(true);
                     }
                 }   
             }
 
-            if(newX == oldX + 1 && newY == oldY + 1 || newX == oldX + 1 && newY == oldY - 1){
-                if(board.getSquare(newX,newY) != nullptr){
-                    if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+            if(x_f == x_i + 1 && y_f == y_i + 1 || x_f == x_i + 1 && y_f == y_i - 1){
+                if(board.getSquare(x_f,y_f) != nullptr){
+                    if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){
                         valid = true;
                     }
                 }
@@ -31,43 +31,43 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
             } 
             
         }else{
-            if(newX == oldX + 1  && newY == oldY){
-                if(board.getSquare(newX,newY)!=nullptr){// checks desitination point
+            if(x_f == x_i + 1  && y_f == y_i){
+                if(board.getSquare(x_f,y_f)!=nullptr){// checks desitination point
                     valid = false;
-                }else if(board.getSquare(newX,newY) == nullptr){
+                }else if(board.getSquare(x_f,y_f) == nullptr){
                     valid = true;
-                    board.getSquare(oldX,oldY)->setenPassant(false);
+                    board.getSquare(x_i,y_i)->setenPassant(false);
                 }  
             }
-            if(newX == oldX + 1 && newY == oldY + 1 || newX == oldX + 1 && newY == oldY - 1){
-                if(board.getSquare(newX,newY) != nullptr){
-                    if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){// capture logic
+            if(x_f == x_i + 1 && y_f == y_i + 1 || x_f == x_i + 1 && y_f == y_i - 1){
+                if(board.getSquare(x_f,y_f) != nullptr){
+                    if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){// capture logic
                         valid = true;
-                        board.getSquare(oldX,oldY)->setenPassant(false);
+                        board.getSquare(x_i,y_i)->setenPassant(false);
                     }
                 }
                 //En_Passant capture
-                if(board.getSquare(oldX,oldY - 1) != nullptr){
-                    if(board.getColourB(oldX,oldY) != board.getColourB(oldX,oldY - 1)){
-                        if(board.getSquare(oldX,oldY - 1) -> getenPassant() == true){
-                            if(board.getSquare(newX - 1, newY) != nullptr){
-                                if(board.getSquare(newX - 1,newY)->getSymbol() == 'P'){
+                if(board.getSquare(x_i,y_i - 1) != nullptr){
+                    if(board.getColourB(x_i,y_i) != board.getColourB(x_i,y_i - 1)){
+                        if(board.getSquare(x_i,y_i - 1) -> getenPassant() == true){
+                            if(board.getSquare(x_f - 1, y_f) != nullptr){
+                                if(board.getSquare(x_f - 1,y_f)->getSymbol() == 'P'){
                                     valid = true;
-                                    board.getSquare(oldX,oldY)->setenPassant(false);
-                                    board.getSquare(oldX,oldY)->setenPassant_capture();
+                                    board.getSquare(x_i,y_i)->setenPassant(false);
+                                    board.getSquare(x_i,y_i)->setenPassant_capture();
                                 }
                             }
                         }                          
                     }
                 }
-                if(board.getSquare(oldX,oldY + 1) != nullptr){
-                    if(board.getColourB(oldX,oldY) != board.getColourB(oldX,oldY + 1) ){
-                        if(board.getSquare(oldX,oldY + 1) -> getenPassant() == true ){
-                            if(board.getSquare(newX - 1, newY) != nullptr){
-                                if(board.getSquare(newX - 1,newY)->getSymbol() == 'P'){
+                if(board.getSquare(x_i,y_i + 1) != nullptr){
+                    if(board.getColourB(x_i,y_i) != board.getColourB(x_i,y_i + 1) ){
+                        if(board.getSquare(x_i,y_i + 1) -> getenPassant() == true ){
+                            if(board.getSquare(x_f - 1, y_f) != nullptr){
+                                if(board.getSquare(x_f - 1,y_f)->getSymbol() == 'P'){
                                     valid = true;
-                                    board.getSquare(oldX,oldY)->setenPassant(false);
-                                    board.getSquare(oldX,oldY)->setenPassant_capture();
+                                    board.getSquare(x_i,y_i)->setenPassant(false);
+                                    board.getSquare(x_i,y_i)->setenPassant_capture();
                                 }
                             }
                         }                          
@@ -79,22 +79,22 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
 
     if(colour_param == 'W'){
         
-        if(board.getSquare(oldX,oldY)->getisMoved() == false){
-            if((newX == oldX - 1 && newY == oldY) || (newX == oldX - 2   && newY == oldY)){
-                if(board.getSquare(newX,newY)!=nullptr){// checks desitination point
+        if(board.getSquare(x_i,y_i)->getisMoved() == false){
+            if((x_f == x_i - 1 && y_f == y_i) || (x_f == x_i - 2   && y_f == y_i)){
+                if(board.getSquare(x_f,y_f)!=nullptr){// checks desitination point
                     valid = false;
-                }else if(board.getSquare(newX,newY) == nullptr){
+                }else if(board.getSquare(x_f,y_f) == nullptr){
                     valid = true;
-                    if(newX == oldX - 2 && newY == oldY){
+                    if(x_f == x_i - 2 && y_f == y_i){
                         std::cout << "En passant active" << '\n';
-                        board.getSquare(oldX,oldY)->setenPassant(true);
+                        board.getSquare(x_i,y_i)->setenPassant(true);
                     }
                 }   
             }
 
-            if(newX == oldX - 1 && newY == oldY + 1 || newX == oldX - 1 && newY == oldY - 1){
-                if(board.getSquare(newX,newY) != nullptr){
-                    if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){// capture logic
+            if(x_f == x_i - 1 && y_f == y_i + 1 || x_f == x_i - 1 && y_f == y_i - 1){
+                if(board.getSquare(x_f,y_f) != nullptr){
+                    if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){// capture logic
                         valid = true;
                     }
                 }
@@ -102,43 +102,43 @@ bool Pawn::isValidMove(int oldX, int oldY, int newX, int newY, Board& board, cha
 
             
         }else{
-            if(newX == oldX - 1 && newY == oldY){
-                if(board.getSquare(newX,newY)!=nullptr){// checks desitination point
+            if(x_f == x_i - 1 && y_f == y_i){
+                if(board.getSquare(x_f,y_f)!=nullptr){// checks desitination point
                     valid = false;
-                }else if(board.getSquare(newX,newY) == nullptr){
+                }else if(board.getSquare(x_f,y_f) == nullptr){
                     valid = true;
-                    board.getSquare(oldX,oldY)->setenPassant(false);
+                    board.getSquare(x_i,y_i)->setenPassant(false);
                 }   
             }
 
-            if(newX == oldX - 1 && newY == oldY + 1 || newX == oldX - 1 && newY == oldY - 1){// capture logic
-                if(board.getSquare(newX,newY) != nullptr){
-                    if(board.getColourB(oldX,oldY) != board.getColourB(newX,newY) ){
+            if(x_f == x_i - 1 && y_f == y_i + 1 || x_f == x_i - 1 && y_f == y_i - 1){// capture logic
+                if(board.getSquare(x_f,y_f) != nullptr){
+                    if(board.getColourB(x_i,y_i) != board.getColourB(x_f,y_f) ){
                         valid = true;
                     }
                 }
                 //En_Passant capture 
-                if(board.getSquare(oldX,oldY - 1) != nullptr){
-                    if(board.getColourB(oldX,oldY) != board.getColourB(oldX,oldY - 1)){
-                        if(board.getSquare(oldX,oldY - 1) -> getenPassant()==true){
-                            if(board.getSquare(newX + 1, newY) != nullptr){
-                                if(board.getSquare(newX + 1,newY)->getSymbol() == 'p'){
+                if(board.getSquare(x_i,y_i - 1) != nullptr){
+                    if(board.getColourB(x_i,y_i) != board.getColourB(x_i,y_i - 1)){
+                        if(board.getSquare(x_i,y_i - 1) -> getenPassant()==true){
+                            if(board.getSquare(x_f + 1, y_f) != nullptr){
+                                if(board.getSquare(x_f + 1,y_f)->getSymbol() == 'p'){
                                     valid = true;
-                                    board.getSquare(oldX,oldY)->setenPassant(false);
-                                    board.getSquare(oldX,oldY)->setenPassant_capture();
+                                    board.getSquare(x_i,y_i)->setenPassant(false);
+                                    board.getSquare(x_i,y_i)->setenPassant_capture();
                                 }
                             }
                         }                          
                     }
                 }
-                if(board.getSquare(oldX,oldY + 1) != nullptr){
-                    if(board.getColourB(oldX,oldY) != board.getColourB(oldX,oldY + 1) ){
-                        if(board.getSquare(oldX,oldY + 1) -> getenPassant()==true ){
-                            if(board.getSquare(newX + 1, newY) != nullptr){
-                                if(board.getSquare(newX + 1,newY)->getSymbol() == 'p'){
+                if(board.getSquare(x_i,y_i + 1) != nullptr){
+                    if(board.getColourB(x_i,y_i) != board.getColourB(x_i,y_i + 1) ){
+                        if(board.getSquare(x_i,y_i + 1) -> getenPassant()==true ){
+                            if(board.getSquare(x_f + 1, y_f) != nullptr){
+                                if(board.getSquare(x_f + 1,y_f)->getSymbol() == 'p'){
                                     valid = true;
-                                    board.getSquare(oldX,oldY)->setenPassant(false);
-                                    board.getSquare(oldX,oldY)->setenPassant_capture();
+                                    board.getSquare(x_i,y_i)->setenPassant(false);
+                                    board.getSquare(x_i,y_i)->setenPassant_capture();
                                 }
                             }
                         }                          
