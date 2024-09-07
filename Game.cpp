@@ -52,7 +52,9 @@ void Game::start(){
                     std::cout << "Choose piece " << currentPlayer->getName() << ":" << '\n';
                     pieceXY = board.inputCoords();
                     not_nullptr = (board.getSquare(pieceXY.first,pieceXY.second)!= nullptr);
-                    current_colour = (board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColour());
+                    if(not_nullptr){//avoids segfaulting
+                        current_colour = (board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColour());
+                    }
                     valid_piece = not_nullptr && current_colour;
                     if(valid_piece == true){
                         std::cout << "Valid Piece selected" << '\n';
