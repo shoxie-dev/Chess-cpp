@@ -38,42 +38,40 @@ void Game::start(){
     int king_y_check{};
     std::pair<int,int> pieceXY;
     std::pair<int,int> posXY;
-    bool final_piece{false};
-    char ans{'s'};
+    bool valid_piece{false};
+    char choice{'y'};
     bool stale_mate = false;
+    bool not_nullptr = false;
+    bool current_colour = false;
 
     while(king_checkmate != true && stale_mate != true){
         board.printBoard();
         if(currentPlayer){      
             if(king_check == false){
-                while(final_piece == false){
+                while(valid_piece == false){
                     std::cout << "Choose piece " << currentPlayer->getName() << ":" << '\n';
                     pieceXY = board.inputCoords();
-                    std::cout << "Change piece? y/n" << '\n';
-                    std::cin >> ans;
-                    if(ans == 'n'){
-                        final_piece = true;
+                    not_nullptr = (board.getSquare(pieceXY.first,pieceXY.second)!= nullptr);
+                    current_colour = (board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColour());
+                    valid_piece = not_nullptr && current_colour;
+                    if(valid_piece == true){
+                        std::cout << "Valid Piece selected" << '\n';
+                        std::cout << "Change piece? y/n" << '\n';
+                        std::cin >> choice;
+                        if(choice == 'y'){
+                            valid_piece = false;
+                        }else if(choice == 'n'){
+                            break;
+                        }
+                    }else{
+                        std::cout << "Invalid piece selected" << '\n';
                     } 
-                }
-                
-                
+                } 
             }else{
                 std::cout << "King is selected : " << currentPlayer->getName() << '\n';
                 pieceXY.first =  king_x_check;
                 pieceXY.second = king_y_check;
                 std::cout << "( " <<  king_x_check << ", " << king_y_check << ")" <<'\n';
-            }
-            
-            if(board.getSquare(pieceXY.first,pieceXY.second)!= nullptr && board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColour()){// btw if you pick nullptr it breaks so maybe
-                std::cout << "Valid piece selected." << '\n';
-            }else{ 
-                bool valid_piece = false;
-                while(valid_piece == false){
-                    std::cout << "Invalid piece selected, select again." << '\n';
-                    pieceXY = board.inputCoords();
-                    valid_piece = (board.getSquare(pieceXY.first,pieceXY.second)!= nullptr) && (board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColour());
-                }
-                std::cout << "Valid piece selected." << '\n';
             }
             std::cout << "Make move: " << '\n';
             posXY = board.inputCoords();
@@ -119,7 +117,7 @@ void Game::start(){
         pieceXY.second = 0;
         posXY.first = 0;
         posXY.second = 0;
-        final_piece = false;
+        valid_piece = false;
 
 
     }

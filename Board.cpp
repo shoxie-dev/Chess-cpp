@@ -16,9 +16,9 @@ Board::Board(){//x y (is default positions)
     // *** WHITE PIECES ***
 
     initPiece(7, 4, new King(white)); // 7 4
-  
-    initPiece(7, 3, new Queen(white));// 7 3
 
+ 
+    initPiece(7, 3, new Queen(white));// 7 3
     initPiece(7, 0, new Rook(white));// 7 0
     initPiece(7, 7, new Rook(white));// 7 7
     initPiece(7, 2, new Bishop(white));// 7 2
@@ -36,6 +36,7 @@ Board::Board(){//x y (is default positions)
     // *** BLACK PIECES ***
 
     initPiece(0, 4, new King(black)); // 0 4
+
 
     initPiece(0, 3, new Queen(black));// 0 3
     initPiece(0, 0, new Rook(black));// 0 0
