@@ -16,8 +16,9 @@ Board::Board(){//x y (is default positions)
     // *** WHITE PIECES ***
 
     initPiece(7, 4, new King(white)); // 7 4
+    initPiece(1, 0, new Queen(white));// 7 3
 
- 
+/* 
     initPiece(7, 3, new Queen(white));// 7 3
     initPiece(7, 0, new Rook(white));// 7 0
     initPiece(7, 7, new Rook(white));// 7 7
@@ -30,14 +31,16 @@ Board::Board(){//x y (is default positions)
     for(int j{}; j < dim; ++j){
         initPiece(6 , j, new Pawn(white)); // 6, 0 <= j < 8 default
     }
+*/
 
 
 
     // *** BLACK PIECES ***
 
     initPiece(0, 4, new King(black)); // 0 4
+    initPiece(1, 3, new Queen(black));// 0 3
 
-
+/*
     initPiece(0, 3, new Queen(black));// 0 3
     initPiece(0, 0, new Rook(black));// 0 0
     initPiece(0, 7, new Rook(black));// 0 7
@@ -50,6 +53,7 @@ Board::Board(){//x y (is default positions)
     for(int j{}; j < dim; ++j){
         initPiece(1 , j, new Pawn(black));//1, 0 <= j < 8 is default
     }
+*/
 
 }
 
@@ -73,8 +77,13 @@ void Board::movePiece(int x_i, int y_i, int x_f, int y_f){
         setTaken(x_f,y_f);
     }
 
-    takeEnPassant(x_i, y_i, x_f, y_f);
-    castleRook(x_i, y_i, x_f, y_f);
+    if(getSymbolB(x_i, y_i) == 'P'|| getSymbolB(x_i, y_i) == 'p'){
+        takeEnPassant(x_i, y_i, x_f, y_f);
+    }
+
+    if(getSymbolB(x_i, y_i) == 'R'|| getSymbolB(x_i, y_i) == 'r'){   
+        castleRook(x_i, y_i, x_f, y_f);
+    }
     
     setSquare(x_f, y_f, x_i, y_i);
 
@@ -451,7 +460,7 @@ bool Board::isCheckmate(char colour){//attacking colour
 bool Board::isKingSafeB(int x_i, int y_i,int x_f, int y_f){
     bool safe{true};
 
-    Board board_copy;
+    Board board_copy;// this is bad because it copies inital board NOT CURRENT
     board_copy = *this;
     board_copy.setNull(x_i,y_i);    
 
@@ -485,7 +494,6 @@ bool Board::isKingSafeB(int x_i, int y_i,int x_f, int y_f){
 
 bool Board::isStalemate(char colour, int k_x, int k_y){
     
-    bool king_check = isCheck(colour,k_x, k_y);
     bool stale_mate{false};
     bool b1{false};
     bool b2{false};
@@ -496,7 +504,6 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
     bool b7{false};
     bool b8{false};
 
-    if(king_check == false){
         if(k_x - 1 >= 0){
             
             if((k_y - 1)>=0){
@@ -538,9 +545,16 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
             std::cout << "Stalemate: draw " << '\n';
         }
 
-    }
+    
     return stale_mate;
 }
 
+bool Board::blockCheckPossible(char colour,int* pieces_avail[][2]){
+    for(int i{}; i < 8; ++i){
+        for(int j{}; j < 8; ++j){
+            
+        }
+    }
+}
 
 

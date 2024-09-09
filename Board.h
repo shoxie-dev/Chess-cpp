@@ -7,7 +7,7 @@ class Board{
     private:
         Piece* squares[8][8]{nullptr};
         bool castle_onceW = true;
-        bool castle_onceB = true;
+        bool castle_onceB = true;     
 
     public:
         Board();
@@ -18,6 +18,7 @@ class Board{
         bool isCheckmate(char colour);
         bool isStalemate(char colour, int k_x, int k_y);
         bool isKingSafeB(int x_i, int y_i, int x_f, int y_f);
+        bool blockCheckPossible(char colour,int* pieces_avail[][2]);
         void castleRook(int x_i, int y_i, int x_f, int y_f);
         void takeEnPassant(int x_i, int y_i, int x_f, int y_f);
 
