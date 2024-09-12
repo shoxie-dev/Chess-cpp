@@ -15,8 +15,8 @@ Board::Board(){//x y (is default positions)
 
     // *** WHITE PIECES ***
 
-    initPiece(7, 4, new King(white)); // 7 4
-    initPiece(1, 0, new Queen(white));// 7 3
+    initPiece(0, 0, new King(white)); // 7 4
+    initPiece(2, 5, new Queen(white));// 0 3
 
 /* 
     initPiece(7, 3, new Queen(white));// 7 3
@@ -37,8 +37,8 @@ Board::Board(){//x y (is default positions)
 
     // *** BLACK PIECES ***
 
-    initPiece(0, 4, new King(black)); // 0 4
-    initPiece(1, 3, new Queen(black));// 0 3
+    initPiece(4, 4, new King(black)); // 0 4
+    initPiece(5, 5, new Queen(black));// 7 3
 
 /*
     initPiece(0, 3, new Queen(black));// 0 3
@@ -227,7 +227,7 @@ void Board::pawnPromotion(char colour){
     }
 }
 
-bool Board::isCheck(char colour,int& k_x, int& k_y){//player colour and coordinates of  king piece
+bool Board::isCheck(char colour,int& attack_x, int& attack_y, int& k_x, int& k_y, bool& double_check){//player colour and coordinates of  king piece
     bool king_check{false};
     
     if(colour == 'B'){// if colour b made a move check if White is in check after that move
@@ -248,23 +248,29 @@ bool Board::isCheck(char colour,int& k_x, int& k_y){//player colour and coordina
             }
         }
         char attack_colour{' '};
+        int count{};
         for(int i{}; i < 8; ++i){
             for(int j{}; j < 8; ++j){
                 if(getSquare(i, j) != nullptr){
                     if(getColourB(k_x, k_y) != getColourB(i, j)){ 
                         attack_colour = getColourB(i, j);
                         if(getSquare(i, j)->isValidMove(i, j, k_x, k_y, *this, attack_colour)){
+                            attack_x = i;
+                            attack_y = j;
                             king_check = true;
-                            std::cout << "White King is in check" << '\n';
-                            break;
+                            ++count;
                         }
                     }
                 }
-            }
-            if(king_check == true){// to break out of outer loop
-                break;
-            }
-            
+            } 
+        }
+
+        if(king_check == true){// to break out of outer loop
+            std::cout << "White King is in check" << '\n';
+        }
+        if(count >= 2){
+            double_check = true;
+            std::cout << "King is double checked." << '\n';
         }
 
     }else if(colour == 'W'){// if white made a move check if Black king is in check
@@ -285,23 +291,28 @@ bool Board::isCheck(char colour,int& k_x, int& k_y){//player colour and coordina
             }
         }
         char attack_colour{' '};
+        int count{};
         for(int i{}; i < 8; ++i){
             for(int j{}; j < 8; ++j){
                 if(getSquare(i, j) != nullptr){
                     if(getColourB(k_x, k_y) != getColourB(i, j)){ 
                         attack_colour = getColourB(i, j);
                         if(getSquare(i, j)->isValidMove(i, j, k_x, k_y, *this, attack_colour)){
+                            attack_x = i;
+                            attack_y = j;
                             king_check = true;
-                            std::cout << "Black King is in check" << '\n';
-                            break;
+                            ++count;
                         }
                     }
                 }
             }
-            if(king_check == true){// to break out of outer loop
-                break;
-            }
-            
+        }
+        if(king_check == true){
+            std::cout << "Black King is in check" << '\n';
+        }
+        if(count >= 2){
+            double_check = true;
+            std::cout << "King is double checked." << '\n';
         }
 
     }
@@ -549,12 +560,163 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
     return stale_mate;
 }
 
-bool Board::blockCheckPossible(char colour,int* pieces_avail[][2]){
-    for(int i{}; i < 8; ++i){
+bool Board::blockCheckPossible(char colour,std::pair<int,int> pieces_avail[128], std::pair<int,int> pieces_block[128], std::pair<int,int> moves[128],int attack_x, int attack_y, int k_x, int k_y){
+    bool possible{false};                     
+    int count{};
+    for(int i{}; i < 8; ++i){//code to find all pieces currently on the board
         for(int j{}; j < 8; ++j){
-            
+            if(getSquare(i, j) != nullptr && getColourB(i, j) == colour){ 
+                pieces_avail[count].first = i;
+                pieces_avail[count].second = j;
+                ++count;
+            }
         }
     }
+    int count_select{};
+    int count_move{};
+    for(int k{}; k < 16; ++k){// need to write this better and not using 3 128 arrays(128 because 16 pieces can move in 8 possible direction, probably a brutal overestimation but yeah)
+        if(k != 0){
+            if(pieces_avail[k].first == 0 && pieces_avail[k].second == 0){
+                break;
+            }
+        }
+        
+        if(attack_x == k_x){// i guess the cool thing is that k index correspondence between the pieces_block and moves array with this code
+            if(k_y < attack_y){
+                for(int j{k_y+1}; j <= attack_y; ++j){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!= nullptr && isValidMoveB(pieces_avail[k].first,pieces_avail[k].second,k_x,j,colour)== true){
+                        possible = true;
+                        pieces_block[count_select] = pieces_avail[k];
+                        moves[count_move]= std::make_pair(k_x,j);
+                        std::cout << "Move piece: (" << pieces_avail[k].first << ", " << pieces_avail[k].second << ')' <<
+                            " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to block check. " << '\n';
+                        ++count_move; 
+                        ++count_select;
+                    }   
+                }
+            }
+
+            if(attack_y < k_y){
+                for(int j{k_y-1}; j >= attack_y; --j){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!= nullptr && isValidMoveB(pieces_avail[k].first,pieces_avail[k].second,k_x,j,colour)== true){
+                        possible = true;
+                        pieces_block[count_select] = pieces_avail[k];
+                        moves[count_move]= std::make_pair(k_x,j);
+                        std::cout << "Move piece: (" << pieces_avail[k].first << ", " << pieces_avail[k].second << ')' <<
+                            " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                        ++count_move; 
+                        ++count_select;
+                    }  
+                }
+                
+            }
+        }
+
+        if(attack_y == k_y){
+            if(attack_x < k_x){
+                for(int i{k_x-1}; i >= attack_x; --i){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!= nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, k_y, colour) == true){
+                        possible = true;
+                        pieces_block[count_select] = pieces_avail[k];
+                        moves[count_move]= std::make_pair(i, k_y);
+                        std::cout << "Move piece: (" << pieces_avail[k].first << ", " << pieces_avail[k].second << ')' <<
+                            " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                        ++count_move; 
+                        ++count_select;
+                    }
+                }
+            }
+
+            if(k_x < attack_x){
+                for(int i{k_x+1}; i <= attack_x; ++i){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, k_y, colour) == true){
+                        possible = true;
+                        pieces_block[count_select] = pieces_avail[k];
+                        moves[count_move]= std::make_pair(i, k_y);
+                        std::cout << "Move piece: (" << pieces_avail[k].first << ", " << pieces_avail[k].second << ')' <<
+                            " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                        ++count_move; 
+                        ++count_select;
+                    }
+                }
+            }
+
+        }
+
+        
+            
+        int dC = k_x + k_y;
+        if(attack_y == -attack_x + dC){
+            if(attack_x < k_x){
+                for(int i{k_x - 1}; i >= attack_x ; --i){
+                    int j = -i + dC;
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, colour)==true){
+                        possible = true;
+                        pieces_block[count_select] = pieces_avail[k];
+                        moves[count_move]= std::make_pair(i, j);
+                        std::cout << "Move piece: (" << pieces_avail[k].first << ", " << pieces_avail[k].second << ')' <<
+                            " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                        ++count_move; 
+                        ++count_select;
+                    }
+                }
+            }
+
+            if(k_x < attack_x){
+                for(int i{k_x + 1}; i <= attack_x; ++i){
+                    int j = -i + dC;
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, colour)==true){
+                        possible = true;
+                        pieces_block[count_select] = pieces_avail[k];
+                        moves[count_move]= std::make_pair(i, j);
+                        std::cout << "Move piece: (" << pieces_avail[k].first << ", " << pieces_avail[k].second << ')' <<
+                            " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                        ++count_move; 
+                        ++count_select;
+                    }
+
+                }
+            }
+        
+        }
+
+        int odC = k_y - k_x;
+        if(attack_y == attack_x + odC){
+            if(attack_x < k_x){
+                for(int i{k_x - 1}; i >= attack_x ; --i){
+                    int j = i + odC;
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, colour)==true){
+                        possible = true;
+                        pieces_block[count_select] = pieces_avail[k];
+                        moves[count_move]= std::make_pair(i, j);
+                        std::cout << "Move piece: (" << pieces_avail[k].first << ", " << pieces_avail[k].second << ')' <<
+                            " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                        ++count_move; 
+                        ++count_select;
+                    }
+                }
+            }
+
+            if(k_x < attack_x){
+                for(int i{k_x + 1}; i <= attack_x; ++i){
+                    int j = i + odC;
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, colour)==true){
+                        possible = true;
+                        pieces_block[count_select] = pieces_avail[k];
+                        moves[count_move]= std::make_pair(i, j);
+                        std::cout << "Move piece: (" << pieces_avail[k].first << ", " << pieces_avail[k].second << ')' <<
+                            " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                        ++count_move; 
+                        ++count_select;
+                    }
+
+                }
+            }
+
+        }
+    }
+    
+    return possible;
 }
 
 
