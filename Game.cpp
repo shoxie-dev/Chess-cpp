@@ -40,9 +40,7 @@ void Game::start(){
     int king_y_check{};
     std::pair<int,int> pieceXY;
     std::pair<int,int> posXY;
-    std::pair<int,int> piece_list[128];
-    std::pair<int,int> chosen_pieces[128];
-    std::pair<int,int> moves[128];
+    bool list_piece{false};
     bool valid_piece{false};
     char choice{'y'};
     bool stale_mate = false;
@@ -51,6 +49,9 @@ void Game::start(){
     bool double_check = false;
     int attack_x;
     int attack_y;
+    std::pair<int,int> piece_list[128];
+    std::pair<int,int> chosen_pieces[128];
+    std::pair<int,int> moves[128];
 
     while(king_checkmate != true && stale_mate != true){
         board.printBoard();
@@ -79,62 +80,161 @@ void Game::start(){
                 } 
             
             }else{
-                std::cout << "Choose piece to lift check or move king : " << currentPlayer->getName() << '\n';
-                block_possible = board.blockCheckPossible(currentPlayer->getColour(),piece_list,chosen_pieces, moves ,attack_x, attack_y, king_x_check, king_y_check);
-                pieceXY = board.inputCoords();
-                // will need to reset std::pair lists(piece, chosen pieces, moves) after this code block ends idk for safety measures
-            }
-            
-            std::cout << "Make move: " << '\n';
-            posXY = board.inputCoords();//need to add an if else statement here as well for if king is in check or not and forcing the player to choose moves from that set which it will always be correct or choosing the king to move out of hte fucking way 
-            valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColour());
-            std::cout << std::boolalpha << valid_move << '\n';
-            if(valid_move == true){
-                board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
-                king_check = board.isCheck(currentPlayer->getColour(), attack_x, attack_y, king_x_check, king_y_check, double_check);
-                if(king_check == false){
-                    stale_mate = board.isStalemate(currentPlayer->getColour(),king_x_check,king_y_check);
-                    if(stale_mate == true){
-                        break;
+                if(double_check == true){
+                    std::cout << "King has been double checked, move to safety." << '\n';
+                    pieceXY = std::make_pair(king_x_check, king_y_check);
+                }else{
+                    while(valid_piece == false){
+                        std::cout << "Choose piece to lift check or move king : " << currentPlayer->getName() << '\n';
+                        block_possible = board.blockCheckPossible(currentPlayer->getColour(),piece_list,chosen_pieces, moves ,attack_x, attack_y, king_x_check, king_y_check);
+                        pieceXY = board.inputCoords();
+
+                        not_nullptr = (board.getSquare(pieceXY.first,pieceXY.second)!= nullptr);
+                        if(not_nullptr){//avoids segfaulting
+                            current_colour = (board.getColourB(pieceXY.first,pieceXY.second) == currentPlayer->getColour());
+                        }
+
+                        for(int i{}; i < 128; ++i){
+                            if( pieceXY == chosen_pieces[i]){
+                                list_piece = true;
+                                break;
+                            }
+                        }
+                        valid_piece = not_nullptr && current_colour && list_piece;
+                        if(valid_piece == true){
+                            std::cout << "Valid Piece selected" << '\n';
+                            std::cout << "Change piece? y/n" << '\n';
+                            std::cin >> choice;
+                            if(choice == 'y'){
+                                valid_piece = false;
+                            }else if( choice == 'n'){
+                                break;
+                            }
+                        }else{
+                            std::cout << "Invalid piece selected " << '\n';
+                        }
                     }
                 }
-                
-                king_checkmate = board.isCheckmate(currentPlayer->getColour());
-                if(king_checkmate == true){
-                    std::cout << "Player " << currentPlayer->getColour() << " wins" <<'\n';
-                    break;
-                }
+            }
+            //making move logic
+            if(king_check == false){
+                std::cout << "Make move: " << '\n';
+                posXY = board.inputCoords();//need to add an if else statement here as well for if king is in check or not and forcing the player to choose moves from that set which it will always be correct or choosing the king to move out of hte fucking way 
+                valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColour());
+                if(valid_move == true){
+                    board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
+                    king_check = board.isCheck(currentPlayer->getColour(), attack_x, attack_y, king_x_check, king_y_check, double_check);
+                    if(king_check == false){
+                        stale_mate = board.isStalemate(currentPlayer->getColour(),king_x_check,king_y_check);
+                        if(stale_mate == true){
+                            break;
+                        }
+                    }
+                    
+                    king_checkmate = board.isCheckmate(currentPlayer->getColour());
+                    if(king_checkmate == true){
+                        std::cout << "Player " << currentPlayer->getColour() << " wins" <<'\n';
+                        break;
+                    }
 
-                board.pawnPromotion(currentPlayer->getColour());
+                    board.pawnPromotion(currentPlayer->getColour());
+                }else{
+                    valid_move = false;
+                    while(valid_move == false){
+                        std::cout << "Invalid move, select again.  " << '\n';
+                        posXY = board.inputCoords();
+                        valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColour());
+                    }
+                    std::cout << "Valid move made." << '\n';
+                    board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
+                    king_check = board.isCheck(currentPlayer->getColour(),attack_x, attack_y, king_x_check, king_y_check, double_check);
+                    if(king_check == false){
+                        stale_mate = board.isStalemate(currentPlayer->getColour(),king_x_check,king_y_check);
+                        if(stale_mate == true){
+                            break;
+                        }
+                    }
+                    king_checkmate = board.isCheckmate(currentPlayer->getColour());
+                    if(king_checkmate == true){
+                        std::cout << "Player " << currentPlayer->getColour() << " wins" <<'\n';
+                        break;
+                    }
+                    board.pawnPromotion(currentPlayer->getColour());
+                }
             }else{
-                valid_move = false;
-                while(valid_move == false){
-                    std::cout << "Invalid move, select again.  " << '\n';
+                std::cout << "Make move: " << '\n';
+                if(pieceXY.first == king_x_check && pieceXY.second == king_y_check){
                     posXY = board.inputCoords();
                     valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColour());
-                }
-                std::cout << "Valid move made." << '\n';
-                board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
-                king_check = board.isCheck(currentPlayer->getColour(),attack_x, attack_y, king_x_check, king_y_check, double_check);
-                if(king_check == false){
-                    stale_mate = board.isStalemate(currentPlayer->getColour(),king_x_check,king_y_check);
-                    if(stale_mate == true){
-                        break;
+                }else{
+                    posXY = board.inputCoords();
+                    for(int i{}; i < 128; ++i){
+                        if(posXY == moves[i]){
+                            valid_move = true;
+                            break;
+                        }
                     }
                 }
-                king_checkmate = board.isCheckmate(currentPlayer->getColour());
-                if(king_checkmate == true){
-                    std::cout << "Player " << currentPlayer->getColour() << " wins" <<'\n';
-                    break;
+                if(valid_move == true){
+                    board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
+                    king_check = board.isCheck(currentPlayer->getColour(), attack_x, attack_y, king_x_check, king_y_check, double_check);
+                    if(king_check == false){
+                        stale_mate = board.isStalemate(currentPlayer->getColour(),king_x_check,king_y_check);
+                        if(stale_mate == true){
+                            break;
+                        }
+                    }
+                    
+                    king_checkmate = board.isCheckmate(currentPlayer->getColour());
+                    if(king_checkmate == true){
+                        std::cout << "Player " << currentPlayer->getColour() << " wins" <<'\n';
+                        break;
+                    }
+
+                    board.pawnPromotion(currentPlayer->getColour());
+                }else{
+                    valid_move = false;
+                    while(valid_move == false){
+                        if(pieceXY.first == king_x_check && pieceXY.second == king_y_check){
+                            posXY = board.inputCoords();
+                            valid_move = board.getSquare(pieceXY.first,pieceXY.second)->isValidMove(pieceXY.first,pieceXY.second,posXY.first,posXY.second,board,currentPlayer->getColour());
+                        }else{
+                            posXY = board.inputCoords();
+                            for(int i{}; i < 128; ++i){
+                                if(posXY == moves[i]){
+                                    valid_move = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    std::cout << "Valid move made." << '\n';
+                    board.movePiece(pieceXY.first,pieceXY.second, posXY.first, posXY.second);
+                    king_check = board.isCheck(currentPlayer->getColour(),attack_x, attack_y, king_x_check, king_y_check, double_check);
+                    if(king_check == false){
+                        stale_mate = board.isStalemate(currentPlayer->getColour(),king_x_check,king_y_check);
+                        if(stale_mate == true){
+                            break;
+                        }
+                    }
+                    king_checkmate = board.isCheckmate(currentPlayer->getColour());
+                    if(king_checkmate == true){
+                        std::cout << "Player " << currentPlayer->getColour() << " wins" <<'\n';
+                        break;
+                    }
+                    board.pawnPromotion(currentPlayer->getColour());
                 }
-                board.pawnPromotion(currentPlayer->getColour());
+
             }
         }
         switchTurn();
-        pieceXY.first = 0;
-        pieceXY.second = 0;
-        posXY.first = 0;
-        posXY.second = 0;
+        pieceXY = {};
+        posXY = {};
+        for(int i{}; i < 128; ++i){
+            piece_list[i] = {};
+            chosen_pieces[i] = {};
+            moves[i] = {};
+        }
         valid_piece = false;
 
 
