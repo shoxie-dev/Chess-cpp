@@ -1,4 +1,3 @@
-/*
 #pragma once
 
 #include "wx/wx.h"
@@ -14,4 +13,4 @@ class cApp : public wxApp// is the "launcher"
     private:
         cMain* m_frame1 = nullptr;
 };
-*/
+

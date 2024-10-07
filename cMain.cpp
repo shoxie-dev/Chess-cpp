@@ -1,4 +1,3 @@
-/*
 #include "cMain.h"
 
 
@@ -73,5 +72,5 @@ void cMain::OnButtonPress(wxCommandEvent& evt){
 
     }
 }
-*/
+
 
