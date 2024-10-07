@@ -8,7 +8,10 @@ class Player{
     public:
         
         Player() = default;
-        //Player(std::string name_param, char color_param);
+        Player(std::string name_param, char colour_param){
+            name = name_param;
+            colour = colour_param;
+        }
 
         std::string getName() const{
             return name;

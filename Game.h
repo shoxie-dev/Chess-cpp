@@ -4,7 +4,7 @@
 #include "Board.h"
 class Game{
     private:
-        Player player1, player2;
+        Player player1,player2;
         Board board;
         Player* currentPlayer;
     public:

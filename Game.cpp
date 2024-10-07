@@ -236,8 +236,6 @@ void Game::start(){
             moves[i] = {};
         }
         valid_piece = false;
-
-
     }
     board.printBoard();
 }
