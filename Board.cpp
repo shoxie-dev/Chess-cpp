@@ -75,10 +75,13 @@ void Board::movePiece(int x_i, int y_i, int x_f, int y_f){
     }
 
     if(getSymbolB(x_i, y_i) == 'P'|| getSymbolB(x_i, y_i) == 'p'){
-        takeEnPassant(x_i, y_i, x_f, y_f);
+        if((x_i - 1 == x_f && y_i - 1 == y_f) || (x_i - 1 == x_f && y_i + 1 == y_f) || (x_i + 1 == x_f && y_i - 1 == y_f ||x_i + 1 == x_f && y_i + 1 == y_f)){
+            takeEnPassant(x_i, y_i, x_f, y_f);
+        }
     }
 
-    if(getSymbolB(x_i, y_i) == 'R'|| getSymbolB(x_i, y_i) == 'r'){   
+
+    if(getSymbolB(x_i, y_i) == 'K'|| getSymbolB(x_i, y_i) == 'k'){   
         castleRook(x_i, y_i, x_f, y_f);
     }
     

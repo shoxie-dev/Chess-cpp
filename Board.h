@@ -23,6 +23,10 @@ class Board{
         void castleRook(int x_i, int y_i, int x_f, int y_f);
         void takeEnPassant(int x_i, int y_i, int x_f, int y_f);
 
+        bool getisMovedB(int x, int y){
+            return squares[x][y] -> getisMoved();
+        }
+
 
         std::pair <int,int> inputCoords() const{
             std::pair <int, int> XY;

@@ -54,7 +54,7 @@ bool Pawn::isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char co
                                 if(board.getSquare(x_f - 1,y_f)->getSymbol() == 'P'){
                                     valid = true;
                                     board.getSquare(x_i,y_i)->setenPassant(false);
-                                    board.getSquare(x_i,y_i)->setenPassant_capture();
+                                    board.getSquare(x_i,y_i)->setenPassant_capture(true);
                                 }
                             }
                         }                          
@@ -67,7 +67,7 @@ bool Pawn::isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char co
                                 if(board.getSquare(x_f - 1,y_f)->getSymbol() == 'P'){
                                     valid = true;
                                     board.getSquare(x_i,y_i)->setenPassant(false);
-                                    board.getSquare(x_i,y_i)->setenPassant_capture();
+                                    board.getSquare(x_i,y_i)->setenPassant_capture(true);
                                 }
                             }
                         }                          
@@ -125,7 +125,7 @@ bool Pawn::isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char co
                                 if(board.getSquare(x_f + 1,y_f)->getSymbol() == 'p'){
                                     valid = true;
                                     board.getSquare(x_i,y_i)->setenPassant(false);
-                                    board.getSquare(x_i,y_i)->setenPassant_capture();
+                                    board.getSquare(x_i,y_i)->setenPassant_capture(true);
                                 }
                             }
                         }                          
@@ -138,7 +138,7 @@ bool Pawn::isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char co
                                 if(board.getSquare(x_f + 1,y_f)->getSymbol() == 'p'){
                                     valid = true;
                                     board.getSquare(x_i,y_i)->setenPassant(false);
-                                    board.getSquare(x_i,y_i)->setenPassant_capture();
+                                    board.getSquare(x_i,y_i)->setenPassant_capture(true);
                                 }
                             }
                         }                          
