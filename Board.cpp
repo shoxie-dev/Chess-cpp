@@ -18,10 +18,14 @@ Board::Board(){//x y (is default positions)
     initPiece(7, 4, new King(white)); // 7 4
 
     initPiece(7, 3, new Queen(white));// 7 3
+
     initPiece(7, 0, new Rook(white));// 7 0
     initPiece(7, 7, new Rook(white));// 7 7
+    
+
     initPiece(7, 2, new Bishop(white));// 7 2
     initPiece(7, 5, new Bishop(white));// 7 5
+
     initPiece(7, 1, new Knight(white));// 7 1
     initPiece(7, 6, new Knight(white));// 7 6
 
@@ -33,23 +37,28 @@ Board::Board(){//x y (is default positions)
 
 
 
+
+
     // *** BLACK PIECES ***
 
     initPiece(0, 4, new King(black)); // 0 4
-
-
     initPiece(0, 3, new Queen(black));// 0 3
+
     initPiece(0, 0, new Rook(black));// 0 0
     initPiece(0, 7, new Rook(black));// 0 7
+
     initPiece(0, 2, new Bishop(black));// 0 2
     initPiece(0, 5, new Bishop(black));// 0 5
+
     initPiece(0, 1, new Knight(black));// 0 1
     initPiece(0, 6, new Knight(black));// 0 6
+    
 
 
     for(int j{}; j < dim; ++j){
         initPiece(1 , j, new Pawn(black));//1, 0 <= j < 8 is default
     }
+
 
 
 }
@@ -75,10 +84,13 @@ void Board::movePiece(int x_i, int y_i, int x_f, int y_f){
     }
 
     if(getSymbolB(x_i, y_i) == 'P'|| getSymbolB(x_i, y_i) == 'p'){
-        takeEnPassant(x_i, y_i, x_f, y_f);
+        if((x_i - 1 == x_f && y_i - 1 == y_f) || (x_i - 1 == x_f && y_i + 1 == y_f) || (x_i + 1 == x_f && y_i - 1 == y_f ||x_i + 1 == x_f && y_i + 1 == y_f)){
+            takeEnPassant(x_i, y_i, x_f, y_f);
+        }
     }
 
-    if(getSymbolB(x_i, y_i) == 'R'|| getSymbolB(x_i, y_i) == 'r'){   
+
+    if(getSymbolB(x_i, y_i) == 'K'|| getSymbolB(x_i, y_i) == 'k'){   
         castleRook(x_i, y_i, x_f, y_f);
     }
     
@@ -115,112 +127,31 @@ void Board::castleRook(int x_i, int y_i, int x_f, int y_f){
 }
 
 void Board::takeEnPassant(int x_i, int y_i, int x_f, int y_f){
-    if(getSquare(x_i,y_i+1) != nullptr){
-        if(getSquare(x_i,y_i+1)->getenPassant() == true){// code for en passant capture
-            std::cout << "inside enPassant movePiece code" << '\n';
-            if(getColourB(x_i,y_i) == 'W'){
-                setTaken(x_f+1,y_f);
-            }
-            if(getColourB(x_i,y_i) == 'B'){
-                std::cout << "inside enPassant movePiece black" << '\n';
-                setTaken(x_f-1,y_f);    
-            }
+    if(getSquare(x_f+1,y_f)!=nullptr && getSquare(x_f+1,y_f)->getenPassant() == true){
+        if(getSymbolB(x_i, y_i) == 'P' && getSymbolB(x_f+1,y_f) == 'p'){
+            setTaken(x_f+1,y_f);
         }
     }
-    
-    if(getSquare(x_i, y_i-1) != nullptr){
-        if(getSquare(x_i,y_i-1)->getenPassant() == true){// code for en passant capture
-            std::cout << "inside enPassant movePiece code" << '\n';
-            if(getColourB(x_i,y_i) == 'W'){
-                setTaken(x_f+1,y_f);
-            }
-            if(getColourB(x_i,y_i) == 'B'){
-                std::cout << "inside enPassant movePiece black" << '\n';
-                setTaken(x_f-1,y_f);    
-            }
+    if(getSquare(x_f-1,y_f)!= nullptr  && getSquare(x_f-1,y_f)->getenPassant() == true){
+        if(getSymbolB(x_i, y_i) == 'p' && getSymbolB(x_f-1,y_f) == 'P'){
+            setTaken(x_f-1,y_f);     
         }
     }
 }
 
-void Board::pawnPromotion(char colour){
-    if(colour == 'B'){
-        int found{};
-        for(int j{}; j < 8; ++j){
-            if(getSquare(7,j) != nullptr && getSymbolB(7, j) == 'p'){
-                found = j;
-                bool valid_piece{false};
-                int choice{};
-                std::cout << "Choose a piece(numbers): " << '\n';
-                std::cout << "1: Queen " << '\n';
-                std::cout << "2: Knight " << '\n';
-                std::cout << "3: Bishop " << '\n';
-                std::cout << "4: Rook " << '\n';
-                while(valid_piece == false){
-                    std::cin >> choice;
-                    if(choice == 1){
-                        setTaken(7,found);
-                        initPiece( 7, found, new Queen('B'));
-                        break;
-                    }else if(choice == 2){
-                        setTaken(7,found);
-                        initPiece( 7, found, new Knight('B'));
-                        break;
-                    }else if(choice == 3){
-                        setTaken(7,found);
-                        initPiece( 7, found, new Bishop('B'));
-                        break;
-                    }else if(choice == 4){
-                        setTaken(7,found);
-                        initPiece( 7, found, new Rook('B'));
-                        break;
-                    }else{
-                        std::cout << "invalid piece selected, try again: " << '\n';
-                    }
-                }
-                break;
-            }
-        }
-
-    }
-
-    if(colour == 'W'){
-        int found{};
-        for(int j{}; j < 8; ++j){
-            if(getSquare(0,j) != nullptr && getSymbolB(0, j) == 'P'){
-                found = j;
-                bool valid_piece{false};
-                int choice{};
-                std::cout << "Choose a piece(numbers): " << '\n';
-                std::cout << "1: Queen " << '\n';
-                std::cout << "2: Knight " << '\n';
-                std::cout << "3: Bishop " << '\n';
-                std::cout << "4: Rook " << '\n';
-                while(valid_piece == false){
-                    std::cin >> choice;
-                    if(choice == 1){
-                        setTaken(0,found);
-                        initPiece(0, found, new Queen('W'));
-                        break;
-                    }else if(choice == 2){
-                        setTaken(0,found);
-                        initPiece(0, found, new Knight('W'));
-                        break;
-                    }else if(choice == 3){
-                        setTaken(0,found);
-                        initPiece(0, found, new Bishop('W'));
-                        break;
-                    }else if(choice == 4){
-                        setTaken(0,found);
-                        initPiece(0, found, new Rook('W'));
-                        break;
-                    }else{
-                        std::cout << "invalid piece selected, try again: " << '\n';
-                    }
-                }
-                break;
-            }
-        }
-
+void Board::pawnPromotion(int x, int y, const std::string& pieceType,char colour){
+    if (pieceType == "queen") {
+        setTaken(x,y);
+        initPiece(x,y, new Queen(colour)); // Replace with a Queen object
+    } else if (pieceType == "rook") {
+        setTaken(x,y);
+        initPiece(x,y, new Rook(colour));
+    } else if (pieceType == "bishop") {
+        setTaken(x,y);
+        initPiece(x,y, new Bishop(colour));
+    } else if (pieceType == "knight") {
+        setTaken(x,y);
+        initPiece(x,y, new Knight(colour));
     }
 }
 
@@ -349,11 +280,11 @@ bool Board::isCheckmate(char colour){//attacking colour
         
         if(k_x - 1 >= 0){
             
-            if((k_y - 1)>=0){
+            if((k_y - 1)>=0 && (getSquare(k_x, k_y - 1) == nullptr || getSquare(k_x - 1,k_y - 1) != nullptr && getColourB(k_x, k_y) != 'W')){
                 b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8){
+            if(k_y + 1 < 8 && (getSquare(k_x - 1, k_y + 1) == nullptr || getSquare(k_x - 1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'W')){
                 b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
                   
             }
@@ -363,11 +294,11 @@ bool Board::isCheckmate(char colour){//attacking colour
 
         if( (k_x + 1 < 8) ){
             
-            if((k_y - 1)>= 0){
+            if((k_y - 1)>= 0 &&(getSquare(k_x + 1, k_y - 1) == nullptr || getSquare(k_x + 1,k_y- 1) != nullptr && getColourB(k_x, k_y) != 'W')){
                 b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8){
+            if(k_y + 1 < 8 && (getSquare(k_x + 1, k_y + 1) == nullptr || getSquare(k_x + 1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'W')){
                 b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
                    
             }
@@ -376,11 +307,11 @@ bool Board::isCheckmate(char colour){//attacking colour
 
         }
 
-        if(k_y - 1 >= 0){//k_x
+        if(k_y - 1 >= 0  && (getSquare(k_x, k_y - 1) == nullptr || getSquare(k_x,k_y-1) != nullptr && getColourB(k_x, k_y) != 'W')){//k_x
             b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
             
         }
-        if(k_y + 1 < 8){
+        if(k_y + 1 < 8 && (getSquare(k_x, k_y + 1) == nullptr || getSquare(k_x,k_y+1) != nullptr && getColourB(k_x, k_y) != 'W')){
            b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
         }
 
@@ -419,11 +350,11 @@ bool Board::isCheckmate(char colour){//attacking colour
         
         if(k_x - 1 >= 0){
             
-            if((k_y - 1)>=0){
+            if((k_y - 1)>=0 && (getSquare(k_x - 1, k_y - 1) == nullptr || getSquare(k_x-1,k_y-1) != nullptr && getColourB(k_x, k_y) != 'B')){
                 b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8){
+            if(k_y + 1 < 8 && (getSquare(k_x - 1, k_y + 1) == nullptr|| getSquare(k_x-1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'B')){
                 b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
                   
             }
@@ -433,11 +364,11 @@ bool Board::isCheckmate(char colour){//attacking colour
 
         if( (k_x + 1 < 8) ){
             
-            if((k_y - 1)>= 0){
+            if((k_y - 1)>= 0 && (getSquare(k_x + 1, k_y - 1) == nullptr|| getSquare(k_x+1,k_y-1) != nullptr && getColourB(k_x, k_y) != 'B')){
                 b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8){
+            if(k_y + 1 < 8 && (getSquare(k_x + 1, k_y + 1) == nullptr|| getSquare(k_x+1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'B')){
                 b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
                    
             }
@@ -446,11 +377,11 @@ bool Board::isCheckmate(char colour){//attacking colour
 
         }
 
-        if(k_y - 1 >= 0){//k_x
+        if(k_y - 1 >= 0 && (getSquare(k_x, k_y - 1) == nullptr || getSquare(k_x,k_y-1) != nullptr && getColourB(k_x, k_y) != 'B')){//k_x
             b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
             
         }
-        if(k_y + 1 < 8){
+        if(k_y + 1 < 8 && (getSquare(k_x, k_y + 1) == nullptr || getSquare(k_x,k_y+1) != nullptr && getColourB(k_x, k_y) != 'B')){
            b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
         }
 
@@ -458,7 +389,6 @@ bool Board::isCheckmate(char colour){//attacking colour
         if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
             king_checkmate = true;
         }
-
     }
 
 
@@ -466,36 +396,107 @@ bool Board::isCheckmate(char colour){//attacking colour
 }
 
 bool Board::isKingSafeB(int x_i, int y_i,int x_f, int y_f){
+    Piece* temp = nullptr;
+    Piece* temp1 = nullptr;
+    Piece* king = getSquare(x_i, y_i);
+    std::pair <int,int> enemy_pieces[16];
     bool safe{true};
-
-    Board board_copy;// this is bad because it copies inital board NOT CURRENT
-    board_copy = *this;
-    board_copy.setNull(x_i,y_i);    
-
-    char attack_colour{' '};
-    for(int i{}; i < 8; ++i){
-        for(int j{}; j < 8; ++j){
-            if(getSquare(i, j) != nullptr){
-                if(getColourB(x_i,y_i) != getColourB(i, j)){ // this assumes square is empty
-                    attack_colour = getColourB(i, j);
-                    if(getSquare(i,j)->getSymbol()!= 'K' && getSquare(i,j)->getSymbol()!='k'){
-                        if(getSquare(i, j)->isValidMove(i, j, x_f, y_f, board_copy, attack_colour)){
-                            safe = false;
-                            
-                        }
-                        if(getSquare(x_f, y_f) != nullptr){//if square is not empty.
-                                board_copy.setNull(x_f,y_f);
-                            if(getSquare(i, j)->isValidMove(i, j, x_f, y_f, board_copy, attack_colour)){
-                                safe =  false;
-                            
-                            }
-                        }
+    int count{};
+    char king_colour = getColourB(x_i, y_i);
+    char attack_colour = ' ';
+    //find enemy pieces
+    if(king_colour == 'W'){
+        for(int i{}; i < 8; ++i){
+            for(int j{}; j < 8; ++j){
+                if(getSquare(i, j)!= nullptr && king_colour != getColourB(i, j)){
+                    if(getSymbolB(i, j) != 'k'){
+                        enemy_pieces[count] = {i , j};
+                        ++count;
                     }
                 }
             }
-            
         }
+        if(count != 0){
+            if(getSquare(x_f, y_f) != nullptr && king_colour != getColourB(x_f, y_f)){
+                temp = getSquare(x_f,y_f);
+                attack_colour = getColourB(enemy_pieces[0].first, enemy_pieces[0].second);
+                setNull(x_f,y_f);
+                initPiece(x_f,y_f, king);
+                for(int i{}; i < count; ++i){
+                    if(isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
+                        safe = false;
+                        break;
+                    }
+                }
+                setNull(x_f,y_f);
+                initPiece(x_f,y_f, temp);
+            }
+            if(getSquare(x_f, y_f) == nullptr){
+                attack_colour = getColourB(enemy_pieces[0].first, enemy_pieces[0].second);
+
+                initPiece(x_f,y_f, king);
+                setNull(x_i,y_i);
+                std::cout << '\n';
+                for(int i{}; i < count; ++i){
+                    if(isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
+
+                        safe = false;
+                        break;
+                    }
+                }
+                initPiece(x_i,y_i, king);
+                setNull(x_f,y_f);
+            }
+        }
+    }else if(king_colour == 'B'){
+        //find enemy pieces
+        for(int i{}; i < 8; ++i){
+            for(int j{}; j < 8; ++j){
+                if(getSquare(i, j)!= nullptr && king_colour != getColourB(i, j)){
+                    if(getSymbolB(i, j)!='K'){
+                        enemy_pieces[count] = {i , j};
+                        ++count;
+                    }
+                }
+            }
+        }
+        if(count != 0){
+            if(getSquare(x_f, y_f) != nullptr && king_colour != getColourB(x_f, y_f)){
+                temp = getSquare(x_f,y_f);
+                attack_colour = getColourB(enemy_pieces[0].first, enemy_pieces[0].second);
+                setNull(x_f,y_f);
+                initPiece(x_f,y_f, king);
+                for(int i{}; i < count; ++i){
+                    if(isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
+                        safe = false;
+                        break;
+                    }
+                }
+                setNull(x_f,y_f);
+                initPiece(x_f,y_f, temp);
+            }
+            if(getSquare(x_f, y_f) == nullptr){
+                attack_colour = getColourB(enemy_pieces[0].first, enemy_pieces[0].second);
+                initPiece(x_f,y_f, king);
+                setNull(x_i,y_i);
+                std::cout << '\n';
+                for(int i{}; i < count; ++i){
+                    if(isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
+                        safe = false;
+                        break;
+                    }
+                }
+                initPiece(x_i,y_i, king);
+                setNull(x_f,y_f);
+            }
+        }
+
+
     }
+
+
+
+
     return safe;
 
 }
@@ -514,11 +515,11 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
 
         if(k_x - 1 >= 0){
             
-            if((k_y - 1)>=0){
+            if((k_y - 1)>=0 && getSquare(k_x - 1, k_y - 1) == nullptr){
                 b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8){
+            if(k_y + 1 < 8 && getSquare(k_x - 1, k_y + 1) == nullptr){
                 b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
                   
             }
@@ -528,11 +529,11 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
 
         if( (k_x + 1 < 8) ){
             
-            if((k_y - 1)>= 0){
+            if((k_y - 1)>= 0 && getSquare(k_x + 1, k_y - 1) == nullptr){
                 b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8){
+            if(k_y + 1 < 8 && getSquare(k_x + 1, k_y + 1) == nullptr){
                 b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
                    
             }
@@ -541,11 +542,11 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
 
         }
 
-        if(k_y - 1 >= 0){//k_x
+        if(k_y - 1 >= 0 && getSquare(k_x, k_y - 1) == nullptr){//k_x
             b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
             
         }
-        if(k_y + 1 < 8){
+        if(k_y + 1 < 8 && getSquare(k_x, k_y + 1) == nullptr){
            b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
         }
          if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
@@ -557,9 +558,10 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
     return stale_mate;
 }
 
-bool Board::blockCheckPossible(char colour,std::pair<int,int> pieces_avail[128], std::pair<int,int> pieces_block[128], std::pair<int,int> moves[128],int attack_x, int attack_y, int k_x, int k_y){
+bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> pieces_block[128], std::pair<int,int> moves[128],int attack_x, int attack_y, int k_x, int k_y){
     bool possible{false};                     
     int count{};
+    std::pair<int,int> pieces_avail[128];
     for(int i{}; i < 8; ++i){//code to find all pieces currently on the board
         for(int j{}; j < 8; ++j){
             if(getSquare(i, j) != nullptr && getColourB(i, j) == colour){ 
@@ -569,9 +571,8 @@ bool Board::blockCheckPossible(char colour,std::pair<int,int> pieces_avail[128],
             }
         }
     }
-    int count_select{};
     int count_move{};
-    for(int k{}; k < 16; ++k){// need to write this better and not using 3 128 arrays(128 because 16 pieces can move in 8 possible direction, probably a brutal overestimation but yeah)
+    for(int k{}; k < 128; ++k){// need to write this better and not using 3 128 arrays(128 because 16 pieces can move in 8 possible direction, probably a brutal overestimation but yeah)
         if(k != 0){
             if(pieces_avail[k].first == 0 && pieces_avail[k].second == 0){
                 break;
@@ -712,6 +713,115 @@ bool Board::blockCheckPossible(char colour,std::pair<int,int> pieces_avail[128],
 
         }
     }
+
+    //seperate king logic to get rid of check
+    ++count_move;
+    ++count_select;
+    if(k_x - 1 >= 0){
+        if((k_y - 1)>=0){
+            if(getSquare(k_x - 1, k_y - 1) == nullptr || ( getSquare(k_x - 1, k_y - 1) != nullptr && getColourB(k_x - 1, k_y - 1) != colour )){
+                if(isKingSafeB(k_x, k_y, k_x - 1, k_y - 1)){
+                    pieces_block[count_select] = std::make_pair(k_x,k_y);// adding king
+                    ++count_select;
+                    moves[count_move]= std::make_pair(k_x - 1, k_y - 1);
+                    ++count_move;
+                    std::cout << "Move piece: (" << pieces_avail[count_select].first << ", " << pieces_avail[count_select].second << ')' <<
+                        " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                }
+            }
+            
+        }
+        if(k_y + 1 < 8){
+            if(getSquare(k_x - 1, k_y + 1) == nullptr || ( getSquare(k_x - 1, k_y + 1) != nullptr && getColourB(k_x - 1, k_y + 1) != colour )){
+                if(isKingSafeB(k_x, k_y, k_x - 1, k_y + 1)){
+                    pieces_block[count_select] = std::make_pair(k_x,k_y);// adding king
+                    ++count_select;
+                    moves[count_move]= std::make_pair(k_x - 1, k_y + 1);
+                    ++count_move;
+                    std::cout << "Move piece: (" << pieces_avail[count_select].first << ", " << pieces_avail[count_select].second << ')' <<
+                        " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                }     
+            }  
+        }
+        if(getSquare(k_x - 1, k_y) == nullptr || ( getSquare(k_x - 1, k_y) != nullptr && getColourB(k_x - 1,k_y) != colour )){
+            if(isKingSafeB(k_x, k_y, k_x - 1, k_y)){
+                pieces_block[count_select] = std::make_pair(k_x,k_y);// adding king
+                ++count_select;
+                moves[count_move]= std::make_pair(k_x - 1, k_y);
+                ++count_move;
+                std::cout << "Move piece: (" << pieces_avail[count_select].first << ", " << pieces_avail[count_select].second << ')' <<
+                    " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+            }
+        }     
+    }
+
+    if( (k_x + 1 < 8) ){
+        
+        if((k_y - 1)>= 0){
+            if(getSquare(k_x + 1, k_y - 1) == nullptr || ( getSquare(k_x + 1, k_y - 1) != nullptr && getColourB(k_x + 1,k_y - 1) != colour )){
+                if(isKingSafeB(k_x, k_y, k_x + 1, k_y - 1)){
+                    pieces_block[count_select] = std::make_pair(k_x,k_y);// adding king
+                    ++count_select;
+                    moves[count_move]= std::make_pair(k_x + 1, k_y - 1);
+                    ++count_move;
+                    std::cout << "Move piece: (" << pieces_avail[count_select].first << ", " << pieces_avail[count_select].second << ')' <<
+                        " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                }
+            }
+        }
+        if(k_y + 1 < 8){
+            if(getSquare(k_x + 1, k_y + 1) == nullptr || ( getSquare(k_x + 1, k_y - 1) != nullptr && getColourB(k_x + 1,k_y + 1) != colour )){
+                if(isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 )){
+                    pieces_block[count_select] = std::make_pair(k_x,k_y);// adding king
+                    ++count_select;
+                    moves[count_move]= std::make_pair(k_x + 1, k_y + 1);
+                    ++count_move;
+                    std::cout << "Move piece: (" << pieces_avail[count_select].first << ", " << pieces_avail[count_select].second << ')' <<
+                        " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+                }
+            }    
+        }
+        if(getSquare(k_x + 1, k_y) == nullptr || ( getSquare(k_x + 1, k_y) != nullptr && getColourB(k_x + 1,k_y) != colour )){
+            if(isKingSafeB(k_x, k_y, k_x + 1, k_y)){
+                pieces_block[count_select] = std::make_pair(k_x,k_y);// adding king
+                ++count_select;
+                
+                moves[count_move]= std::make_pair(k_x + 1, k_y);
+                ++count_move;
+                std::cout << "Move piece: (" << pieces_avail[count_select].first << ", " << pieces_avail[count_select].second << ')' <<
+                    " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+            }
+        }
+        
+
+    }
+
+    if(k_y - 1 >= 0){//k_x
+        if(getSquare(k_x, k_y - 1) == nullptr || ( getSquare(k_x, k_y - 1) != nullptr && getColourB(k_x,k_y - 1) != colour )){
+            if(isKingSafeB(k_x, k_y, k_x , k_y - 1)){
+                pieces_block[count_select] = std::make_pair(k_x,k_y);// adding king
+                ++count_select;
+                moves[count_move]= std::make_pair(k_x, k_y - 1);
+                ++count_move;
+                std::cout << "Move piece: (" << pieces_avail[count_select].first << ", " << pieces_avail[count_select].second << ')' <<
+                    " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+            }
+        }
+    }
+    if(k_y + 1 < 8){
+        if(getSquare(k_x, k_y + 1) == nullptr || ( getSquare(k_x, k_y + 1) != nullptr && getColourB(k_x,k_y + 1) != colour )){
+            if(isKingSafeB(k_x, k_y, k_x , k_y + 1)){
+                std::cout << "why the fuck is this legal\n";
+                pieces_block[count_select] = std::make_pair(k_x,k_y);// adding king
+                ++count_select;
+                moves[count_move]= std::make_pair(k_x, k_y + 1);
+                ++count_move;
+                std::cout << "Move piece: (" << pieces_avail[count_select].first << ", " << pieces_avail[count_select].second << ')' <<
+                    " to (" << moves[count_move].first << ", " << moves[count_move].second << ") to lift check. " << '\n';
+            }
+        }
+    }
+
     
     return possible;
 }

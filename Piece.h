@@ -42,8 +42,8 @@ class Piece{
             enPassant = enPassant_param;
         }
 
-        void setenPassant_capture(){
-            capture_enPassant = true;
+        void setenPassant_capture(bool fr){
+            capture_enPassant = fr;
         }
 
         void setCastled(){

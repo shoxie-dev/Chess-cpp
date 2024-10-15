@@ -1,4 +1,4 @@
-
+/*
 #include "Game.h"
 #include <iostream>
 
@@ -7,3 +7,4 @@ int main(){
     game.start();
     return 0;
 }
+*/

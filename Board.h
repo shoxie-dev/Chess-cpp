@@ -14,14 +14,18 @@ class Board{
         Board();
         void printBoard();
         void movePiece(int x_i, int y_i, int x_f, int y_f);
-        void pawnPromotion(char colour);
+        void pawnPromotion(int x, int y, const std::string& pieceType,char colour);
         bool isCheck(char colour, int& attack_x, int& attack_y, int& k_x, int& k_y, bool& double_check);
         bool isCheckmate(char colour);
         bool isStalemate(char colour, int k_x, int k_y);
         bool isKingSafeB(int x_i, int y_i, int x_f, int y_f);
-        bool blockCheckPossible(char colour,std::pair<int,int> pieces_avail[128], std::pair<int,int> pieces_block[128], std::pair<int,int> moves[128], int attack_x, int attack_y, int k_x, int k_y);
+        bool blockCheckPossible(char colour, int& count_select,std::pair<int,int> pieces_block[128], std::pair<int,int> moves[128], int attack_x, int attack_y, int k_x, int k_y);
         void castleRook(int x_i, int y_i, int x_f, int y_f);
         void takeEnPassant(int x_i, int y_i, int x_f, int y_f);
+
+        bool getisMovedB(int x, int y){
+            return squares[x][y] -> getisMoved();
+        }
 
 
         std::pair <int,int> inputCoords() const{
