@@ -1,1 +1,1 @@
-A terminal chess program.
+A chess program with GUI.
