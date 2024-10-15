@@ -1,3 +1,4 @@
+/*
 #include "Game.h"
 
 Game::Game(std::string name1, std::string name2){
@@ -239,3 +240,4 @@ void Game::start(){
     }
     board.printBoard();
 }
+*/

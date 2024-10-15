@@ -1,3 +1,4 @@
+/*
 #ifndef _GAME_
 #define _GAME_
 #include "Player.h"
@@ -17,3 +18,4 @@ class Game{
 };
 
 #endif
+*/
