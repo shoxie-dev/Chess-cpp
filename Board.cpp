@@ -280,11 +280,11 @@ bool Board::isCheckmate(char colour){//attacking colour
         
         if(k_x - 1 >= 0){
             
-            if((k_y - 1)>=0 && getSquare(k_x - 1, k_y - 1) == nullptr){
+            if((k_y - 1)>=0 && (getSquare(k_x, k_y - 1) == nullptr || getSquare(k_x - 1,k_y - 1) != nullptr && getColourB(k_x, k_y) != 'W')){
                 b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8 && getSquare(k_x - 1, k_y + 1) == nullptr){
+            if(k_y + 1 < 8 && (getSquare(k_x - 1, k_y + 1) == nullptr || getSquare(k_x - 1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'W')){
                 b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
                   
             }
@@ -294,11 +294,11 @@ bool Board::isCheckmate(char colour){//attacking colour
 
         if( (k_x + 1 < 8) ){
             
-            if((k_y - 1)>= 0 && getSquare(k_x + 1, k_y - 1) == nullptr){
+            if((k_y - 1)>= 0 &&(getSquare(k_x + 1, k_y - 1) == nullptr || getSquare(k_x + 1,k_y- 1) != nullptr && getColourB(k_x, k_y) != 'W')){
                 b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8 && getSquare(k_x + 1, k_y + 1) == nullptr){
+            if(k_y + 1 < 8 && (getSquare(k_x + 1, k_y + 1) == nullptr || getSquare(k_x + 1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'W')){
                 b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
                    
             }
@@ -307,11 +307,11 @@ bool Board::isCheckmate(char colour){//attacking colour
 
         }
 
-        if(k_y - 1 >= 0  && getSquare(k_x, k_y - 1) == nullptr){//k_x
+        if(k_y - 1 >= 0  && (getSquare(k_x, k_y - 1) == nullptr || getSquare(k_x,k_y-1) != nullptr && getColourB(k_x, k_y) != 'W')){//k_x
             b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
             
         }
-        if(k_y + 1 < 8 && getSquare(k_x, k_y + 1) == nullptr){
+        if(k_y + 1 < 8 && (getSquare(k_x, k_y + 1) == nullptr || getSquare(k_x,k_y+1) != nullptr && getColourB(k_x, k_y) != 'W')){
            b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
         }
 
@@ -350,11 +350,11 @@ bool Board::isCheckmate(char colour){//attacking colour
         
         if(k_x - 1 >= 0){
             
-            if((k_y - 1)>=0 && getSquare(k_x - 1, k_y - 1) == nullptr){
+            if((k_y - 1)>=0 && (getSquare(k_x - 1, k_y - 1) == nullptr || getSquare(k_x-1,k_y-1) != nullptr && getColourB(k_x, k_y) != 'B')){
                 b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8 && getSquare(k_x - 1, k_y + 1) == nullptr){
+            if(k_y + 1 < 8 && (getSquare(k_x - 1, k_y + 1) == nullptr|| getSquare(k_x-1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'B')){
                 b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
                   
             }
@@ -364,11 +364,11 @@ bool Board::isCheckmate(char colour){//attacking colour
 
         if( (k_x + 1 < 8) ){
             
-            if((k_y - 1)>= 0 && getSquare(k_x + 1, k_y - 1) == nullptr){
+            if((k_y - 1)>= 0 && (getSquare(k_x + 1, k_y - 1) == nullptr|| getSquare(k_x+1,k_y-1) != nullptr && getColourB(k_x, k_y) != 'B')){
                 b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8 && getSquare(k_x + 1, k_y + 1) == nullptr){
+            if(k_y + 1 < 8 && (getSquare(k_x + 1, k_y + 1) == nullptr|| getSquare(k_x+1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'B')){
                 b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
                    
             }
@@ -377,11 +377,11 @@ bool Board::isCheckmate(char colour){//attacking colour
 
         }
 
-        if(k_y - 1 >= 0 && getSquare(k_x, k_y - 1) == nullptr){//k_x
+        if(k_y - 1 >= 0 && (getSquare(k_x, k_y - 1) == nullptr || getSquare(k_x,k_y-1) != nullptr && getColourB(k_x, k_y) != 'B')){//k_x
             b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
             
         }
-        if(k_y + 1 < 8 && getSquare(k_x, k_y + 1) == nullptr){
+        if(k_y + 1 < 8 && (getSquare(k_x, k_y + 1) == nullptr || getSquare(k_x,k_y+1) != nullptr && getColourB(k_x, k_y) != 'B')){
            b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
         }
 

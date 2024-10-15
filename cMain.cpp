@@ -149,6 +149,7 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
 
                     // Move the selected piece to the new square
                     board.movePiece(selectedX, selectedY, x, y);
+                    board.printBoard();
                     buttons[selectedX][selectedY]->SetBitmap(empty_block);
                     wxBitmap pieceBitmap = GetPieceBitmap(board.getSquare(x, y));
                     buttons[x][y]->SetBitmap(pieceBitmap);
