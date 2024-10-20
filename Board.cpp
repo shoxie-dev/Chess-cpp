@@ -34,14 +34,10 @@ Board::Board(){//x y (is default positions)
         initPiece(6 , j, new Pawn(white)); // 6, 0 <= j < 8 default
     }
 
-
-
-
-
-
     // *** BLACK PIECES ***
 
-    initPiece(0, 4, new King(black)); // 0 4
+    initPiece(0, 0, new King(black)); // 0 4
+ 
     initPiece(0, 3, new Queen(black));// 0 3
 
     initPiece(0, 0, new Rook(black));// 0 0
@@ -53,13 +49,9 @@ Board::Board(){//x y (is default positions)
     initPiece(0, 1, new Knight(black));// 0 1
     initPiece(0, 6, new Knight(black));// 0 6
     
-
-
     for(int j{}; j < dim; ++j){
         initPiece(1 , j, new Pawn(black));//1, 0 <= j < 8 is default
     }
-
-
 
 }
 
@@ -251,19 +243,18 @@ bool Board::isCheck(char colour,int& attack_x, int& attack_y, int& k_x, int& k_y
 bool Board::isCheckmate(char colour){//attacking colour
 
     bool king_checkmate{false};
-
-    if(colour == 'B'){//check if W is checkmated
-        bool found{false};
-        int k_x{};
-        int k_y{};
-        bool b1{false};
-        bool b2{false};
-        bool b3{false};
-        bool b4{false};
-        bool b5{false};
-        bool b6{false};
-        bool b7{false};
-        bool b8{false};
+    bool found{false};
+    int k_x{};
+    int k_y{};
+    bool b1{false};
+    bool b2{false};
+    bool b3{false};
+    bool b4{false};
+    bool b5{false};
+    bool b6{false};
+    bool b7{false};
+    bool b8{false};
+    if(colour == 'B'){
         for(int i{}; i < 8; ++i){
             for(int j{}; j < 8; ++j){
                 if(getSquare(i,j) != nullptr && getSymbolB(i, j) == 'K'){
@@ -277,63 +268,7 @@ bool Board::isCheckmate(char colour){//attacking colour
                 break;
             }
         }
-        
-        if(k_x - 1 >= 0){
-            
-            if((k_y - 1)>=0 && (getSquare(k_x, k_y - 1) == nullptr || getSquare(k_x - 1,k_y - 1) != nullptr && getColourB(k_x, k_y) != 'W')){
-                b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
-                
-            }
-            if(k_y + 1 < 8 && (getSquare(k_x - 1, k_y + 1) == nullptr || getSquare(k_x - 1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'W')){
-                b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
-                  
-            }
-            b3 = isKingSafeB(k_x, k_y, k_x - 1, k_y);
-            
-        }
-
-        if( (k_x + 1 < 8) ){
-            
-            if((k_y - 1)>= 0 &&(getSquare(k_x + 1, k_y - 1) == nullptr || getSquare(k_x + 1,k_y- 1) != nullptr && getColourB(k_x, k_y) != 'W')){
-                b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
-                
-            }
-            if(k_y + 1 < 8 && (getSquare(k_x + 1, k_y + 1) == nullptr || getSquare(k_x + 1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'W')){
-                b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
-                   
-            }
-            b6 = isKingSafeB(k_x, k_y, k_x + 1, k_y);
-           
-
-        }
-
-        if(k_y - 1 >= 0  && (getSquare(k_x, k_y - 1) == nullptr || getSquare(k_x,k_y-1) != nullptr && getColourB(k_x, k_y) != 'W')){//k_x
-            b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
-            
-        }
-        if(k_y + 1 < 8 && (getSquare(k_x, k_y + 1) == nullptr || getSquare(k_x,k_y+1) != nullptr && getColourB(k_x, k_y) != 'W')){
-           b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
-        }
-
-        // i think this is probably the worst thing i have ever coded, lord please forgive me
-
-        if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
-            king_checkmate = true;
-        }
-
-
-    }else if(colour == 'W'){//check if B is checkmated
-        bool found{false};
-        int k_x{};
-        int k_y{};
-        bool b1{false};
-        bool b2{false};
-        bool b3{false};
-        bool b4{false};
-        bool b5{false};
-        bool b6{false};
-        bool b7{false};
-        bool b8{false};
+    }else if(colour == 'W'){
         for(int i{}; i < 8; ++i){
             for(int j{}; j < 8; ++j){
                 if(getSquare(i,j) != nullptr && getSymbolB(i, j) == 'k'){
@@ -347,51 +282,52 @@ bool Board::isCheckmate(char colour){//attacking colour
                 break;
             }
         }
+
+    }
         
-        if(k_x - 1 >= 0){
+    if(k_x - 1 >= 0){
+        
+        if((k_y - 1)>=0 && (getSquare(k_x - 1, k_y - 1) == nullptr) ||getSquare(k_x-1,k_y-1) != nullptr && getColourB(k_x, k_y) != getColourB(k_x-1,k_y-1) ){
+            b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
             
-            if((k_y - 1)>=0 && (getSquare(k_x - 1, k_y - 1) == nullptr || getSquare(k_x-1,k_y-1) != nullptr && getColourB(k_x, k_y) != 'B')){
-                b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
-                
-            }
-            if(k_y + 1 < 8 && (getSquare(k_x - 1, k_y + 1) == nullptr|| getSquare(k_x-1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'B')){
-                b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
-                  
-            }
+        }
+        if(k_y + 1 < 8 && (getSquare(k_x - 1, k_y + 1) == nullptr ||getSquare(k_x-1,k_y+1) != nullptr && getColourB(k_x, k_y) != getColourB(k_x-1,k_y+1))){
+            b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
+            
+        }
+        if(getSquare(k_x - 1, k_y) == nullptr ||getSquare(k_x-1,k_y) != nullptr && getColourB(k_x, k_y) != getColourB(k_x-1,k_y)){
             b3 = isKingSafeB(k_x, k_y, k_x - 1, k_y);
-            
-        }
-
-        if( (k_x + 1 < 8) ){
-            
-            if((k_y - 1)>= 0 && (getSquare(k_x + 1, k_y - 1) == nullptr|| getSquare(k_x+1,k_y-1) != nullptr && getColourB(k_x, k_y) != 'B')){
-                b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
-                
-            }
-            if(k_y + 1 < 8 && (getSquare(k_x + 1, k_y + 1) == nullptr|| getSquare(k_x+1,k_y+1) != nullptr && getColourB(k_x, k_y) != 'B')){
-                b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
-                   
-            }
-            b6 = isKingSafeB(k_x, k_y, k_x + 1, k_y);
-           
-
-        }
-
-        if(k_y - 1 >= 0 && (getSquare(k_x, k_y - 1) == nullptr || getSquare(k_x,k_y-1) != nullptr && getColourB(k_x, k_y) != 'B')){//k_x
-            b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
-            
-        }
-        if(k_y + 1 < 8 && (getSquare(k_x, k_y + 1) == nullptr || getSquare(k_x,k_y+1) != nullptr && getColourB(k_x, k_y) != 'B')){
-           b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
-        }
-
-
-        if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
-            king_checkmate = true;
         }
     }
 
+    if( (k_x + 1 < 8) ){
+        
+        if((k_y - 1)>= 0 &&((getSquare(k_x + 1, k_y - 1) == nullptr)  ||getSquare(k_x+1,k_y-1) != nullptr && getColourB(k_x, k_y) != getColourB(k_x+1,k_y-1))){
+            b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
+            
+        }
+        if(k_y + 1 < 8 && ((getSquare(k_x + 1, k_y + 1) == nullptr  ||getSquare(k_x+1,k_y+1) != nullptr && getColourB(k_x, k_y) != getColourB(k_x+1,k_y+1))) ){
+            b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
+            
+        }
+        if(getSquare(k_x + 1, k_y) == nullptr  ||getSquare(k_x+1,k_y) != nullptr && getColourB(k_x, k_y) != getColourB(k_x+1,k_y)){
+            b6 = isKingSafeB(k_x, k_y, k_x + 1, k_y);
+        }
+    
+    }
 
+    if(k_y - 1 >= 0  && ((getSquare(k_x, k_y - 1) == nullptr)  ||getSquare(k_x,k_y-1) != nullptr && getColourB(k_x, k_y) != getColourB(k_x,k_y-1))){//k_x
+        b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
+        
+    }
+    if(k_y + 1 < 8 && ((getSquare(k_x, k_y + 1) == nullptr)  ||getSquare(k_x,k_y+1) != nullptr && getColourB(k_x, k_y) != getColourB(k_x,k_y+1))){
+        b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
+    }
+
+    // i think this is probably the worst thing i have ever coded, lord please forgive me
+    if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
+        king_checkmate = true;
+    }
     return king_checkmate;
 }
 
@@ -404,7 +340,11 @@ bool Board::isKingSafeB(int x_i, int y_i,int x_f, int y_f){
     int count{};
     char king_colour = getColourB(x_i, y_i);
     char attack_colour = ' ';
+    if(x_i == x_f && y_i == y_f){
+        return true;
+    }
     //find enemy pieces
+
     if(king_colour == 'W'){
         for(int i{}; i < 8; ++i){
             for(int j{}; j < 8; ++j){
@@ -416,40 +356,7 @@ bool Board::isKingSafeB(int x_i, int y_i,int x_f, int y_f){
                 }
             }
         }
-        if(count != 0){
-            if(getSquare(x_f, y_f) != nullptr && king_colour != getColourB(x_f, y_f)){
-                temp = getSquare(x_f,y_f);
-                attack_colour = getColourB(enemy_pieces[0].first, enemy_pieces[0].second);
-                setNull(x_f,y_f);
-                initPiece(x_f,y_f, king);
-                for(int i{}; i < count; ++i){
-                    if(isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
-                        safe = false;
-                        break;
-                    }
-                }
-                setNull(x_f,y_f);
-                initPiece(x_f,y_f, temp);
-            }
-            if(getSquare(x_f, y_f) == nullptr){
-                attack_colour = getColourB(enemy_pieces[0].first, enemy_pieces[0].second);
-
-                initPiece(x_f,y_f, king);
-                setNull(x_i,y_i);
-                std::cout << '\n';
-                for(int i{}; i < count; ++i){
-                    if(isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
-
-                        safe = false;
-                        break;
-                    }
-                }
-                initPiece(x_i,y_i, king);
-                setNull(x_f,y_f);
-            }
-        }
     }else if(king_colour == 'B'){
-        //find enemy pieces
         for(int i{}; i < 8; ++i){
             for(int j{}; j < 8; ++j){
                 if(getSquare(i, j)!= nullptr && king_colour != getColourB(i, j)){
@@ -460,48 +367,46 @@ bool Board::isKingSafeB(int x_i, int y_i,int x_f, int y_f){
                 }
             }
         }
-        if(count != 0){
-            if(getSquare(x_f, y_f) != nullptr && king_colour != getColourB(x_f, y_f)){
-                temp = getSquare(x_f,y_f);
-                attack_colour = getColourB(enemy_pieces[0].first, enemy_pieces[0].second);
-                setNull(x_f,y_f);
-                initPiece(x_f,y_f, king);
-                for(int i{}; i < count; ++i){
-                    if(isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
-                        safe = false;
-                        break;
-                    }
-                }
-                setNull(x_f,y_f);
-                initPiece(x_f,y_f, temp);
-            }
-            if(getSquare(x_f, y_f) == nullptr){
-                attack_colour = getColourB(enemy_pieces[0].first, enemy_pieces[0].second);
-                initPiece(x_f,y_f, king);
-                setNull(x_i,y_i);
-                std::cout << '\n';
-                for(int i{}; i < count; ++i){
-                    if(isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
-                        safe = false;
-                        break;
-                    }
-                }
-                initPiece(x_i,y_i, king);
-                setNull(x_f,y_f);
-            }
-        }
-
 
     }
+        
+    if(count != 0){
+        if(getSquare(x_f, y_f) != nullptr && king_colour != getColourB(x_f, y_f)){
+            temp = getSquare(x_f,y_f);
+            attack_colour = getColourB(enemy_pieces[0].first, enemy_pieces[0].second);
+            setNull(x_f,y_f);
+            initPiece(x_f,y_f, king);
+            for(int i{}; i < count; ++i){
+                if(isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
+                    safe = false;
+                    break;
+                }
+            }
+            setNull(x_f,y_f);
+            initPiece(x_f,y_f, temp);
+        }
+        if(getSquare(x_f, y_f) == nullptr){
+            attack_colour = getColourB(enemy_pieces[0].first, enemy_pieces[0].second);
 
+            initPiece(x_f,y_f, king);
+            setNull(x_i,y_i);
+            for(int i{}; i < count; ++i){
+                if(isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
 
-
+                    safe = false;
+                    break;
+                }
+            }
+            initPiece(x_i,y_i, king);
+            setNull(x_f,y_f);
+        }
+    }
 
     return safe;
-
 }
 
 bool Board::isStalemate(char colour, int k_x, int k_y){
+    //add b9 which is for if position is unchanged idk
     
     bool stale_mate{false};
     bool b1{false};
@@ -515,11 +420,11 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
 
         if(k_x - 1 >= 0){
             
-            if((k_y - 1)>=0 && getSquare(k_x - 1, k_y - 1) == nullptr){
+            if((k_y - 1)>=0 ){
                 b1 = isKingSafeB(k_x, k_y, k_x - 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8 && getSquare(k_x - 1, k_y + 1) == nullptr){
+            if(k_y + 1 < 8 ){
                 b2 =isKingSafeB(k_x, k_y, k_x - 1, k_y + 1); 
                   
             }
@@ -529,11 +434,11 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
 
         if( (k_x + 1 < 8) ){
             
-            if((k_y - 1)>= 0 && getSquare(k_x + 1, k_y - 1) == nullptr){
+            if((k_y - 1)>= 0 ){
                 b4 = isKingSafeB(k_x, k_y, k_x + 1, k_y - 1);
                 
             }
-            if(k_y + 1 < 8 && getSquare(k_x + 1, k_y + 1) == nullptr){
+            if(k_y + 1 < 8 ){
                 b5 = isKingSafeB(k_x, k_y, k_x + 1, k_y + 1 );
                    
             }
@@ -542,11 +447,11 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
 
         }
 
-        if(k_y - 1 >= 0 && getSquare(k_x, k_y - 1) == nullptr){//k_x
+        if(k_y - 1 >= 0 ){//k_x
             b7 = isKingSafeB(k_x, k_y, k_x , k_y - 1);
             
         }
-        if(k_y + 1 < 8 && getSquare(k_x, k_y + 1) == nullptr){
+        if(k_y + 1 < 8 ){
            b8 = isKingSafeB(k_x, k_y, k_x , k_y + 1);
         }
          if(b1 == false && b2 == false && b3 == false && b4 == false && b5 == false && b6 == false && b7 == false && b8 == false){
@@ -559,12 +464,13 @@ bool Board::isStalemate(char colour, int k_x, int k_y){
 }
 
 bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> pieces_block[128], std::pair<int,int> moves[128],int attack_x, int attack_y, int k_x, int k_y){
-    bool possible{false};                     
+    bool possible{false};
+    char enemy_colour{};                     
     int count{};
     std::pair<int,int> pieces_avail[128];
     for(int i{}; i < 8; ++i){//code to find all pieces currently on the board
         for(int j{}; j < 8; ++j){
-            if(getSquare(i, j) != nullptr && getColourB(i, j) == colour){ 
+            if(getSquare(i, j) != nullptr && getColourB(i, j) != colour){ 
                 pieces_avail[count].first = i;
                 pieces_avail[count].second = j;
                 ++count;
@@ -572,6 +478,11 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
         }
     }
     int count_move{};
+    if(colour == 'B'){
+        enemy_colour = 'W';
+    }else if(colour == 'W'){
+        enemy_colour = 'B';
+    }
     for(int k{}; k < 128; ++k){// need to write this better and not using 3 128 arrays(128 because 16 pieces can move in 8 possible direction, probably a brutal overestimation but yeah)
         if(k != 0){
             if(pieces_avail[k].first == 0 && pieces_avail[k].second == 0){
@@ -582,7 +493,7 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
         if(attack_x == k_x){// i guess the cool thing is that k index correspondence between the pieces_block and moves array with this code
             if(k_y < attack_y){
                 for(int j{k_y+1}; j <= attack_y; ++j){
-                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!= nullptr && isValidMoveB(pieces_avail[k].first,pieces_avail[k].second,k_x,j,colour)== true){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!= nullptr && isValidMoveB(pieces_avail[k].first,pieces_avail[k].second,k_x,j,enemy_colour)== true){
                         possible = true;
                         pieces_block[count_select] = pieces_avail[k];
                         moves[count_move]= std::make_pair(k_x,j);
@@ -596,7 +507,7 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
 
             if(attack_y < k_y){
                 for(int j{k_y-1}; j >= attack_y; --j){
-                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!= nullptr && isValidMoveB(pieces_avail[k].first,pieces_avail[k].second,k_x,j,colour)== true){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!= nullptr && isValidMoveB(pieces_avail[k].first,pieces_avail[k].second,k_x,j,enemy_colour)== true){
                         possible = true;
                         pieces_block[count_select] = pieces_avail[k];
                         moves[count_move]= std::make_pair(k_x,j);
@@ -613,7 +524,7 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
         if(attack_y == k_y){
             if(attack_x < k_x){
                 for(int i{k_x-1}; i >= attack_x; --i){
-                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!= nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, k_y, colour) == true){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!= nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, k_y, enemy_colour) == true){
                         possible = true;
                         pieces_block[count_select] = pieces_avail[k];
                         moves[count_move]= std::make_pair(i, k_y);
@@ -627,7 +538,7 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
 
             if(k_x < attack_x){
                 for(int i{k_x+1}; i <= attack_x; ++i){
-                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, k_y, colour) == true){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, k_y, enemy_colour) == true){
                         possible = true;
                         pieces_block[count_select] = pieces_avail[k];
                         moves[count_move]= std::make_pair(i, k_y);
@@ -648,7 +559,7 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
             if(attack_x < k_x){
                 for(int i{k_x - 1}; i >= attack_x ; --i){
                     int j = -i + dC;
-                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, colour)==true){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, enemy_colour)==true){
                         possible = true;
                         pieces_block[count_select] = pieces_avail[k];
                         moves[count_move]= std::make_pair(i, j);
@@ -663,7 +574,7 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
             if(k_x < attack_x){
                 for(int i{k_x + 1}; i <= attack_x; ++i){
                     int j = -i + dC;
-                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, colour)==true){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, enemy_colour)==true){
                         possible = true;
                         pieces_block[count_select] = pieces_avail[k];
                         moves[count_move]= std::make_pair(i, j);
@@ -683,7 +594,7 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
             if(attack_x < k_x){
                 for(int i{k_x - 1}; i >= attack_x ; --i){
                     int j = i + odC;
-                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, colour)==true){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, enemy_colour)==true){
                         possible = true;
                         pieces_block[count_select] = pieces_avail[k];
                         moves[count_move]= std::make_pair(i, j);
@@ -698,7 +609,7 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
             if(k_x < attack_x){
                 for(int i{k_x + 1}; i <= attack_x; ++i){
                     int j = i + odC;
-                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, colour)==true){
+                    if(getSquare(pieces_avail[k].first, pieces_avail[k].second)!=nullptr && isValidMoveB(pieces_avail[k].first, pieces_avail[k].second, i, j, enemy_colour)==true){
                         possible = true;
                         pieces_block[count_select] = pieces_avail[k];
                         moves[count_move]= std::make_pair(i, j);

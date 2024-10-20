@@ -57,7 +57,6 @@ bool King::isKingSafe(int x_i, int y_i,int x_f, int y_f, Board& board){
             
                 for(int i{}; i < count ; ++i){
                     if(board.isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
-                        std::cout << "assigning false\n";
                         safe = false;
                         break;
                     }
@@ -106,7 +105,6 @@ bool King::isKingSafe(int x_i, int y_i,int x_f, int y_f, Board& board){
             
                 for(int i{}; i < count ; ++i){
                     if(board.isValidMoveB(enemy_pieces[i].first, enemy_pieces[i].second, x_f,y_f, attack_colour)){
-                        std::cout << "assigning false\n";
                         safe = false;
                         break;
                     }
@@ -137,7 +135,6 @@ bool King::isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char co
                 found_king = true;
                 break;
             }else if(board.getSquare(i, j) != nullptr && colour_param != board.getColourB(i, j) &&board.getSymbolB(i, j) == 'k'){
-                std::cout << "found enemy king\n";
                 found_king_x = i;
                 found_king_y = j;
                 found_king = true;
@@ -150,7 +147,6 @@ bool King::isValidMove(int x_i, int y_i, int x_f, int y_f, Board& board, char co
     }
     
     if(abs(x_f - found_king_x) <= 1 && abs(y_f - found_king_y) <=1){
-        std::cout<< "inside if statement\n";
         return false;
     }
     if((x_f == x_i - 1) && (y_f == y_i)||(x_f == x_i) && (y_f == y_i + 1)||(x_f == x_i + 1) && (y_f == y_i)||(x_f == x_i) && (y_f == y_i - 1)){

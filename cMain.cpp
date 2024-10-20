@@ -44,11 +44,12 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Chess",wxPoint(30, 30), wxSize(1024
             buttons[row][col]->Bind(wxEVT_BUTTON, &cMain::OnButtonPress, this);  
         }
     }
-
+   
     for(int j{}; j < 8; ++j){
         buttons[1][j]->SetBitmap(pawn_black); // Set a black pawn at row 1, col 0
         buttons[6][j]->SetBitmap(pawn_white);
     }
+
 
     //white pieces
     buttons[7][4]->SetBitmap(king_white);// 7 4
@@ -66,6 +67,7 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Chess",wxPoint(30, 30), wxSize(1024
 
     //black pieces
     buttons[0][4]->SetBitmap(king_black);// 0 4
+
     buttons[0][3]->SetBitmap(queen_black);// 0 3
  
     buttons[0][0]->SetBitmap(rook_black);// 0 0
@@ -76,6 +78,7 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Chess",wxPoint(30, 30), wxSize(1024
 
     buttons[0][1]->SetBitmap(knight_black);// 0 1
     buttons[0][6]->SetBitmap(knight_black);// 0 6
+
 
     CreateStatusBar();
     SetSizer(grid);
@@ -168,14 +171,15 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                         }
                     }else{
                         std::string k_colour = (currentPlayer->getColour() != 'W')? "White" : "Black";
+                        block_check = board.blockCheckPossible(currentPlayer->getColour(), count_check,chosen_pieces, moves ,attack_x, attack_y, k_x, k_y);
+                        std::cout << std::boolalpha;
+                        std::cout << block_check << '\n';
                         wxLogStatus("%s king is in check", k_colour);
                     }
 
                     king_checkmate = board.isCheckmate(currentPlayer->getColour());
                     if(king_check){
-                        std::cout << "inside first if statement\n";
-                        std::cout << king_checkmate << '\n';
-                        if(king_checkmate == true){
+                        if(king_checkmate == true && !block_check){
                             std::string winner{" "};
                             std::string x_wins = " wins.";
                             if(currentPlayer->getColour() == 'W'){
@@ -249,7 +253,6 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                         wxLogStatus("Selected piece at (%d, %d)", k_x, k_y);
                     }
                 }else{
-                    block_check = board.blockCheckPossible(currentPlayer->getColour(), count_check,chosen_pieces, moves ,attack_x, attack_y, k_x, k_y);
                     if (selectedPiece == nullptr) { // this section of code is for if king is not in check
                         not_nullptr = board.getSquare(x,y) != nullptr;
                         if(not_nullptr){
@@ -289,7 +292,8 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                 }
                 
                 valid_move = list_move && board.isValidMoveB(selectedX, selectedY,x,y, currentPlayer->getColour());
-                if (valid_move && (board.getSquare(x,y) == nullptr || enemy)) {
+                if (valid_move) { //&& (board.getSquare(x,y) == nullptr || enemy)
+
                     //first deal with it visually seems to be less of a hassle for enpassant
                     wxBitmap empty_block("./assets/empty_block.png");
                     wxBitmap rook_white("./assets/wr.png");
@@ -327,12 +331,16 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                         }
                     }else{
                         std::string k_colour = (currentPlayer->getColour() != 'W')? "White" : "Black";
+                        block_check = board.blockCheckPossible(currentPlayer->getColour(), count_check,chosen_pieces, moves ,attack_x, attack_y, k_x, k_y);
+                        std::cout << std::boolalpha;
+                        std::cout << block_check << '\n';
                         wxLogStatus("%s king is in check", k_colour);
                     }
 
                     king_checkmate = board.isCheckmate(currentPlayer->getColour());
                     if(king_check){
-                        if(king_checkmate == true){
+                        std::cout << "inside check else block\n";
+                        if(king_checkmate == true && !block_check){
                             std::string winner{" "};
                             std::string x_wins = " wins.";
                             if(currentPlayer->getColour() == 'W'){
