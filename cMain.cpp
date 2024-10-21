@@ -8,6 +8,7 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Chess",wxPoint(30, 30), wxSize(1024
     valid_move = false;
     not_nullptr = false;
     correct_colour = false;
+    king_safety = false;
 
     //init player objects
     player1.setName("Player1"); 
@@ -131,6 +132,15 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                 }
                 
                 valid_move = board.isValidMoveB(selectedX, selectedY,x,y, currentPlayer->getColour());
+                if(currentPlayer->getColour() == 'W'){
+                    king_safety = board.pieceBlockingCheck(selectedX, selectedY, x, y, 'B');
+                }else if(currentPlayer->getColour() == 'B'){
+                    king_safety = board.pieceBlockingCheck(selectedX, selectedY, x, y, 'W');
+                }
+            
+                if(!king_safety){
+                    valid_move = false;
+                }
 
                 if (valid_move && (board.getSquare(x,y) == nullptr || enemy)) {
                     //first deal with it visually seems to be less of a hassle for enpassant
@@ -292,6 +302,15 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                 }
                 
                 valid_move = list_move && board.isValidMoveB(selectedX, selectedY,x,y, currentPlayer->getColour());
+                if(currentPlayer->getColour() == 'W'){
+                    king_safety = board.pieceBlockingCheck(selectedX, selectedY, x, y, 'B');
+                }else if(currentPlayer->getColour() == 'B'){
+                    king_safety = board.pieceBlockingCheck(selectedX, selectedY, x, y, 'W');
+                }
+            
+                if(!king_safety){
+                    valid_move = false;
+                }
                 if (valid_move) { //&& (board.getSquare(x,y) == nullptr || enemy)
 
                     //first deal with it visually seems to be less of a hassle for enpassant
@@ -369,6 +388,7 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                     selectedPiece = nullptr;
                     selectedX = -1;
                     selectedY = -1;
+                    
                     //switch turn
                     switchTurn(x, y);
                 }else if (selectedPiece != nullptr) {

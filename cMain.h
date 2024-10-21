@@ -18,6 +18,7 @@ class cMain : public wxFrame//start of our GUI
         bool valid_piece;
         bool not_nullptr;
         bool valid_move;
+        bool king_safety;
         bool correct_colour;
         bool king_check{false};
         //variables for isCheck

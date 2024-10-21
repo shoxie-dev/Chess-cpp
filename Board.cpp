@@ -737,4 +737,79 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
     return possible;
 }
 
+bool Board::pieceBlockingCheck(int selectedX, int selectedY, int x, int y, char colour){
+    bool safe{true};
+    
+    bool double_c{false};
+    bool found{false};
+    Piece* temp = nullptr;
+    Piece* temp1 = nullptr;
+    int k_x{};
+    int k_y{};
+    int attack_x{};
+    int attack_y{};
+    char attack_colour = ' ';
+    if(colour == 'B'){
+        char attack_colour = 'W';
+        for(int i{}; i < 8; ++i){
+            for(int j{}; j < 8; ++j){
+                if(getSquare(i,j) != nullptr && getSymbolB(i, j) == 'K'){
+                    k_x = i;
+                    k_y = j;
+                    found = true;
+                    break;
+                }
+            }
+            if(found == true){
+                break;
+            }
+        }
+    }else if(colour == 'W'){
+        char attack_colour = 'B';
+        for(int i{}; i < 8; ++i){
+            for(int j{}; j < 8; ++j){
+                if(getSquare(i,j) != nullptr && getSymbolB(i, j) == 'k'){
+                    k_x = i;
+                    k_y = j;
+                    found = true;
+                    break;
+                }
+            }
+            if(found == true){
+                break;
+            }
+        }
 
+    }
+    Piece* king = getSquare(k_x, k_y);
+    char king_colour = getColourB(k_x, k_y);
+
+    if(getSquare(x, y) != nullptr && king_colour != getColourB(x, y)){
+        temp = getSquare(selectedX, selectedY); // store selected piece
+        temp1 = getSquare(x, y); // store enemy piece at x,y
+ 
+        setNull(x, y);// "take" piece
+        initPiece(x,y, temp); // move selected piece to x,y
+        if(isCheck(colour, attack_x, attack_y, k_x, k_y, double_c)){ // check if king is in check or not
+            safe = false;
+        }
+        setNull(x ,y);// set x,y to null again
+        initPiece(x, y, temp1);
+        initPiece(selectedX , selectedY , temp);
+    }
+    if(getSquare(x, y) == nullptr){
+        temp = getSquare(selectedX, selectedY);
+        initPiece(x,y , temp);
+        setNull(selectedX, selectedY);
+
+        if(isCheck(colour, attack_x, attack_y, k_x, k_y, double_c)){
+            safe = false;
+        }
+        initPiece(selectedX,selectedY, temp);
+        setNull(x,y);
+    }
+    
+    
+    return safe;
+    
+}
