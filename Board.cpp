@@ -36,7 +36,7 @@ Board::Board(){//x y (is default positions)
 
     // *** BLACK PIECES ***
 
-    initPiece(0, 0, new King(black)); // 0 4
+    initPiece(0, 4, new King(black)); // 0 4
  
     initPiece(0, 3, new Queen(black));// 0 3
 
@@ -164,6 +164,7 @@ bool Board::isCheck(char colour,int& attack_x, int& attack_y, int& k_x, int& k_y
                 }
             }
             if(found == true){
+                std::cout << "found W king\n";
                 break;
             }
         }
@@ -207,6 +208,7 @@ bool Board::isCheck(char colour,int& attack_x, int& attack_y, int& k_x, int& k_y
                 }
             }
             if(found == true){
+                std::cout << "found B king\n";
                 break;
             }
         }
@@ -254,6 +256,7 @@ bool Board::isCheckmate(char colour){//attacking colour
     bool b6{false};
     bool b7{false};
     bool b8{false};
+
     if(colour == 'B'){
         for(int i{}; i < 8; ++i){
             for(int j{}; j < 8; ++j){
@@ -626,6 +629,7 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
     }
 
     //seperate king logic to get rid of check
+    
     ++count_move;
     ++count_select;
     if(k_x - 1 >= 0){
@@ -732,7 +736,7 @@ bool Board::blockCheckPossible(char colour,int& count_select,std::pair<int,int> 
             }
         }
     }
-
+    
     
     return possible;
 }

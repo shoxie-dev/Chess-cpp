@@ -132,6 +132,7 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                 }
                 
                 valid_move = board.isValidMoveB(selectedX, selectedY,x,y, currentPlayer->getColour());
+                
                 if(currentPlayer->getColour() == 'W'){
                     king_safety = board.pieceBlockingCheck(selectedX, selectedY, x, y, 'B');
                 }else if(currentPlayer->getColour() == 'B'){
@@ -141,6 +142,8 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                 if(!king_safety){
                     valid_move = false;
                 }
+                
+                
 
                 if (valid_move && (board.getSquare(x,y) == nullptr || enemy)) {
                     //first deal with it visually seems to be less of a hassle for enpassant
@@ -167,11 +170,16 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                     wxBitmap pieceBitmap = GetPieceBitmap(board.getSquare(x, y));
                     buttons[x][y]->SetBitmap(pieceBitmap);
 
-
-                    king_check = board.isCheck(currentPlayer->getColour(), attack_x, attack_y, k_x, k_y, double_check);
+                    
+                    if(currentPlayer->getColour() == 'W'){
+                        king_check = board.isCheck('B', attack_x, attack_y, k_x, k_y, double_check);
+                    }else if(currentPlayer->getColour() == 'B'){
+                        king_check = board.isCheck('W', attack_x, attack_y, k_x, k_y, double_check);
+                    }
+                    
 
                     if(!king_check){
-                        stale_mate = board.isStalemate(currentPlayer->getColour(),k_x,k_y);
+                        //stale_mate = board.isStalemate(currentPlayer->getColour(),k_x,k_y);
                         if(stale_mate == true){
                             std::string message = "Game is a draw";
                             wxMessageDialog* dialog = new wxMessageDialog(nullptr, message, "Game Over", wxOK);
@@ -302,6 +310,7 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                 }
                 
                 valid_move = list_move && board.isValidMoveB(selectedX, selectedY,x,y, currentPlayer->getColour());
+                
                 if(currentPlayer->getColour() == 'W'){
                     king_safety = board.pieceBlockingCheck(selectedX, selectedY, x, y, 'B');
                 }else if(currentPlayer->getColour() == 'B'){
@@ -311,6 +320,9 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                 if(!king_safety){
                     valid_move = false;
                 }
+                
+                
+                
                 if (valid_move) { //&& (board.getSquare(x,y) == nullptr || enemy)
 
                     //first deal with it visually seems to be less of a hassle for enpassant
@@ -336,9 +348,15 @@ void cMain::OnButtonPress(wxCommandEvent& evt) {
                     wxBitmap pieceBitmap = GetPieceBitmap(board.getSquare(x, y));
                     buttons[x][y]->SetBitmap(pieceBitmap);
 
-
-                    king_check = board.isCheck(currentPlayer->getColour(), attack_x, attack_y, k_x, k_y, double_check);
-
+                    std::cout << "before king_check statement\n";
+                    
+                    if(currentPlayer->getColour() == 'W'){
+                        king_check = board.isCheck('B', attack_x, attack_y, k_x, k_y, double_check);
+                    }else if(currentPlayer->getColour() == 'B'){
+                        king_check = board.isCheck('W', attack_x, attack_y, k_x, k_y, double_check);
+                    }
+                    
+                    std::cout << "after king_check statement\n";
                     if(!king_check){
                         stale_mate = board.isStalemate(currentPlayer->getColour(),k_x,k_y);
                         if(stale_mate == true){
